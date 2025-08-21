@@ -1,22 +1,23 @@
 import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native'
 import styles from './nearbyjobs.style'
-import { COLORS, SIZES } from '@/constants'
-import { useRouter } from 'expo-router'
+import { router, useRouter } from 'expo-router'
 import NearbyJobCard from '../../common/cards/nearby/NearbyJobCard'
 import useFetch from '../../../hooks/useFetch'
 import { StyleSheet } from 'react-native'
 
 const Nearbyjobs = () => {
 
-  const { data, isLoading, error } = useFetch("search", {
-    query: "React developer",
-    num_pages: 1
+  const { data, isLoading, error } = useFetch({
+    endpoint: "search", query: {
+      query: "React developer",
+      num_pages: 1
+    }
   })
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Popular jobs</Text>
+        <Text style={styles.headerTitle}>Nearby jobs</Text>
         <TouchableOpacity>
           <Text>Show all</Text>
         </TouchableOpacity>
@@ -27,17 +28,13 @@ const Nearbyjobs = () => {
           : error ? (
             <Text>Something went wrong</Text>
           ) : (
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <PopularJobCard
-                  item={item}
-                />
-              )}
-              keyExtractor={item => item?.job_id}
-              nestedScrollEnabled
-              horizontal
-            />
+            data?.map((job) => (
+              <NearbyJobCard
+                job={job}
+                key={`nearby-job-${job?.job_id}`}
+                handleNavigate={() => router.push(`/job-details/${job.job_id}`)}
+              />
+            ))
           )
         }
       </View>

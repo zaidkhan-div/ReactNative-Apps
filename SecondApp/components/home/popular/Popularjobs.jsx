@@ -8,9 +8,11 @@ import useFetch from '../../../hooks/useFetch'
 
 const Popularjobs = () => {
 
-  const { data, isLoading, error } = useFetch("search", {
-    query: "React developer",
-    num_pages: 1
+  const { data, isLoading, error } = useFetch({
+    endpoint: "search", query: {
+      query: "React developer",
+      num_pages: 1
+    }
   })
   console.log(data.map(item => item.employer_logo), "FetchingData");
 
