@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import NewIcon from "react-native-vector-icons/Ionicons";
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
+import { Link } from 'expo-router';
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
@@ -15,10 +16,14 @@ const Welcome = () => {
             <SafeAreaView>
                 <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.menuWrapper}>
-                        <Icon name="menu" size={30} color={Theme.colors.primary} />
+                        <Link href="/Menu">
+                            <Icon name="menu" size={30} color={Theme.colors.primary} />
+                        </Link>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.analyticWrapper}>
-                        <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
+                        <Link href="/Analytics">
+                            <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
+                        </Link>
                     </TouchableOpacity>
                 </View>
 
@@ -39,7 +44,7 @@ const Welcome = () => {
         </>
     )
 }
-export default Welcome
+export default Welcome;
 
 
 const styles = StyleSheet.create({
