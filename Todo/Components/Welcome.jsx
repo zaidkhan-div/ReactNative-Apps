@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Button, Alert, TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { create } from "react-native-pixel-perfect"
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import Icon from "react-native-vector-icons/Entypo";
+import NewIcon from "react-native-vector-icons/Ionicons";
+import PerfectSize from "../utils/PerfectSize";
+import Theme from '../utils/theme.js'
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
@@ -10,11 +12,20 @@ const Welcome = () => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 1, backgroundColor: "#ffff" }}>
+            <SafeAreaView>
+                <View style={styles.iconsContainer}>
+                    <TouchableOpacity style={styles.menuWrapper}>
+                        <Icon name="menu" size={30} color={Theme.colors.primary} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.analyticWrapper}>
+                        <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
+                    </TouchableOpacity>
+                </View>
+
                 <View style={styles.inputContainer}>
                     <View style={styles.inputWrapper}>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input]}
                             placeholder='Enter todo...'
                             value={inputVal}
                             onChangeText={(text) => setInputVal(text)}
@@ -30,34 +41,49 @@ const Welcome = () => {
 }
 export default Welcome
 
-const perfectSize = create({
-    width: 375,
-    height: 812,
-})
 
 const styles = StyleSheet.create({
+    iconsContainer: {
+        display: "fle",
+        flexDirection: "row",
+        paddingHorizontal: 5,
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    menuWrapper: {
+        cursor: "pointer"
+    },
+    analyticWrapper: {
+        cursor: "pointer"
+    },
     inputContainer: {
-        marginTop: perfectSize(20),
+        marginTop: PerfectSize(20),
         display: "flex",
         flexDirection: "row",
-        width: "100%"
+        width: "100%",
+        gap: 10,
+        paddingHorizontal: 5
     },
     inputWrapper: {
         flex: 1
     },
     input: {
-        // backgroundColor: "#312651",
-        color: "white",
-        fontSize: perfectSize(16),
+        color: "black",
+        fontSize: 16,
         flex: 1,
-        borderWidth: 1,        // thickness of border
-        borderColor: "black",    // color of border
-        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: "black",
+        borderRadius: PerfectSize(20),
+        padding: 10,
+        outline: "none"
     },
     btnWrapper: {},
     btn: {
-        backgroundColor: '#FF7754',
-        fontSize: perfectSize(18),
-        padding: perfectSize(10)
+        backgroundColor: Theme.colors.primary,
+        color: "white",
+        fontSize: 18,
+        padding: 10,
+        borderRadius: PerfectSize(20),
+        cursor: "pointer"
     }
 })
