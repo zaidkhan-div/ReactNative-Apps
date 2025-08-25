@@ -28,17 +28,17 @@ const Welcome = () => {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <View style={styles.inputWrapper}>
-                        <TextInput
-                            style={[styles.input]}
-                            placeholder='Enter todo...'
-                            value={inputVal}
-                            onChangeText={(text) => setInputVal(text)}
-                        />
-                    </View>
-                    <TouchableOpacity style={styles.btnWrapper}>
+                    {/* <View style={styles.inputWrapper}> */}
+                    <TextInput
+                        style={[styles.input]}
+                        placeholder='Search Todo...'
+                        value={inputVal}
+                        onChangeText={(text) => setInputVal(text)}
+                    />
+                    {/* </View>  */}
+                    {/* <TouchableOpacity style={styles.btnWrapper}>
                         <Text style={styles.btn}>Add Todo</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </SafeAreaView>
         </>
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "black",
         borderRadius: PerfectSize(20),
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
         outline: "none"
     },
     btnWrapper: {},
