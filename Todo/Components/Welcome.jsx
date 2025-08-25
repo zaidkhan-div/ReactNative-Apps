@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
 import NewIcon from "react-native-vector-icons/Ionicons";
@@ -18,20 +18,32 @@ const Welcome = () => {
             try {
                 setLoading(true);
                 const response = await axios.get("http://192.168.0.119:3000/todos");
-                setData(response.data);
+                setTimeout(() => {
+                    setData(response.data);
+                    setLoading(false);
+                }, 3000);
             } catch (error) {
                 console.log(error.message);
-                setLoading(true)
-            } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
         fetchData();
     }, []);
 
+    const searchTodos = data.filter((item, index) => {
+        if (inputVal.trim()) {
+            const input = inputVal.toLowerCase();
+            return item?.title.toLowerCase().includes(input);
+        } else {
+            return item
+        }
+    });
+
+    console.log(searchTodos);
+
     return (
-        <>
-            <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <View>
                 <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.menuWrapper}>
                         <Link href="/Menu">
@@ -58,13 +70,16 @@ const Welcome = () => {
                         <Text style={styles.btn}>Add Todo</Text>
                     </TouchableOpacity> */}
                 </View>
-            </SafeAreaView>
+            </View>
 
             <ScrollView style={styles.container}>
                 {loading ? (
-                    <Text style={styles.loading}>Loading...</Text>
+                    // <Text style={styles.loading}>Loading...</Text>
+                    <View style={styles.loader}>
+                        <ActivityIndicator size="large" color={Theme.colors.primary} />
+                    </View>
                 ) : (
-                    data?.map((item, index) => (
+                    searchTodos?.map((item, index) => (
                         <View key={index} style={styles.todoCard}>
                             {/* <CheckBox
                                 value={item?.completed}
@@ -91,7 +106,7 @@ const Welcome = () => {
                     ))
                 )}
             </ScrollView>
-        </>
+        </SafeAreaView>
     )
 }
 export default Welcome;
@@ -103,7 +118,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 5,
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
     },
     menuWrapper: {
         cursor: "pointer"
@@ -112,12 +127,12 @@ const styles = StyleSheet.create({
         cursor: "pointer"
     },
     inputContainer: {
-        marginTop: PerfectSize(20),
+        marginTop: 13,
         display: "flex",
         flexDirection: "row",
         width: "100%",
         gap: 10,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
     },
     inputWrapper: {
         flex: 1
@@ -144,13 +159,18 @@ const styles = StyleSheet.create({
     },
     // This is for the TodosContainer
     container: {
-        // marginTop: 20,
+        marginTop: 10,
         flex: 1,
     },
     loading: {
         textAlign: 'center',
         fontSize: 20,
         marginTop: 30,
+    },
+    loader: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     },
     todoCard: {
         backgroundColor: '#fff',

@@ -1,43 +1,35 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Modal as RNModal } from 'react-native'
-import Icon from 'react-native-vector-icons/Entypo';
+import { StyleSheet, Text, View, TextInput } from 'react-native'
 import Theme from '../utils/theme';
+import { TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { Link } from 'expo-router';
+import Toast from 'react-native-toast-message';
 
 const Modal = () => {
-    // const [openModal, setOpenModal] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
-    // const handleModal = () => {
-    //     setOpenModal(true);
-    // }
-    // const handleSubmit = () => {
-    //     console.log({ title, description });
-    //     setOpenModal(false);
-    // }
+    const handleSubmit = () => {
+        Toast.show({
+            type: "success",
+            text1: "Todo",
+            text2: "Your todo added successfully!",
+            props: { style: { backgroundColor: Theme.colors.primary } }
+        });
+    }
 
     return (
         <>
-            <TouchableOpacity style={styles.iconWrapper} >
-                <Link href="/modal">
-                    <Icon name="plus" size={30} color="white" />
-                </Link>
-            </TouchableOpacity>
-
-            {/* Modal */}
-            {/* <RNModal visible={openModal} animationType="fade" transparent={true}>
+            <View style={styles.container}>
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalTitle}>Add Todo</Text>
-
                         <TextInput
                             style={styles.input}
                             placeholder="Title"
                             value={title}
                             onChangeText={setTitle}
                         />
-
                         <TextInput
                             style={[styles.input, styles.textarea]}
                             placeholder="Description"
@@ -45,48 +37,39 @@ const Modal = () => {
                             onChangeText={setDescription}
                             multiline
                         />
-
                         <View style={styles.actions}>
-                            <TouchableOpacity style={[styles.button, styles.cancelBtn]} onPress={() => setOpenModal(false)}>
-                                <Text style={styles.buttonText}>Cancel</Text>
+                            <TouchableOpacity style={[styles.button, styles.cancelBtn]} >
+                                <Link href="../" >
+                                    <Text style={styles.buttonText}>Cancel</Text>
+                                </Link>
                             </TouchableOpacity>
-
                             <TouchableOpacity
-                                style={[styles.button, styles.addBtn]}
-                                onPress={handleSubmit}>
-                                <Text style={styles.buttonText}>Add</Text>
+                                style={[styles.button, styles.addBtn]}>
+                                <Text style={styles.buttonText} onPress={handleSubmit}>Add</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-            </RNModal> */}
+            </View>
+            <Toast position='top' />
         </>
-    );
-};
+    )
+}
 
-export default Modal;
+export default Modal
 
 const styles = StyleSheet.create({
-    iconWrapper: {
-        backgroundColor: Theme.colors.primary,
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 100,
-        position: 'absolute',
-        bottom: 55,
-        right: 20,
+    container: {
+        height: "100%",
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "center"
     },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    modalOverlay: {},
     modalContainer: {
         width: '85%',
         backgroundColor: 'white',
+        margin: "auto",
         borderRadius: 12,
         padding: 20,
         elevation: 5,
@@ -132,4 +115,5 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '600',
     },
-});
+})
+

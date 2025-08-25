@@ -1,0 +1,21 @@
+SafeAreaView → Renders content within the safe area boundaries (avoids notch/cutout).
+
+ScrollView → Makes content scrollable (good for small data).
+
+FlatList → Efficient list rendering (for large datasets).
+
+SectionList → Like FlatList but grouped into sections.
+
+TouchableOpacity → Button with opacity feedback on press.
+
+TouchableHighlight → Button with highlight feedback on press.
+
+Pressable → Newer, more flexible alternative to Touchable*.
+
+Modal → For popups or overlays.
+
+ActivityIndicator → Loading spinner.
+
+RefreshControl → Pull-to-refresh for ScrollView/FlatList.
+
+KeyboardAvoidingView → Adjusts UI when keyboard appears.
