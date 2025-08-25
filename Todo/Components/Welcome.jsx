@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
 import NewIcon from "react-native-vector-icons/Ionicons";
@@ -79,31 +79,43 @@ const Welcome = () => {
                         <ActivityIndicator size="large" color={Theme.colors.primary} />
                     </View>
                 ) : (
-                    searchTodos?.map((item, index) => (
-                        <View key={index} style={styles.todoCard}>
-                            {/* <CheckBox
-                                value={item?.completed}
-                                onValueChange={(value) => handleCheckbox(value, item)}
-                            /> */}
-                            <View style={styles.todoContent}>
-                                <Text style={styles.todoTitle}>{item?.title}</Text>
-                                <Text style={styles.todoDescription}>{item?.description}</Text>
+                    // searchTodos?.map((item, index) => (
+                    //     <View key={index} style={styles.todoCard}>
+                    //         {/* <CheckBox
+                    //             value={item?.completed}
+                    //             onValueChange={(value) => handleCheckbox(value, item)}
+                    //         /> */}
+                    //         <View style={styles.todoContent}>
+                    //             <Text style={styles.todoTitle}>{item?.title}</Text>
+                    //             <Text style={styles.todoDescription}>{item?.description}</Text>
 
-                                {/* <View style={styles.badgeContainer}>
-                                    <Text
-                                        style={[
-                                            styles.priorityBadge,
-                                            item?.priority === 'high' ? styles.priorityHigh : styles.priorityNormal
-                                        ]}
-                                    >
-                                        {item?.priority}
-                                    </Text>
-                                    <Text style={styles.badge}>Due: {item?.dueDate}</Text>
-                                    <Text style={styles.badge}>Estimated: {item?.estimatedHours}</Text>
-                                </View> */}
+                    //             {/* <View style={styles.badgeContainer}>
+                    //                 <Text
+                    //                     style={[
+                    //                         styles.priorityBadge,
+                    //                         item?.priority === 'high' ? styles.priorityHigh : styles.priorityNormal
+                    //                     ]}
+                    //                 >
+                    //                     {item?.priority}
+                    //                 </Text>
+                    //                 <Text style={styles.badge}>Due: {item?.dueDate}</Text>
+                    //                 <Text style={styles.badge}>Estimated: {item?.estimatedHours}</Text>
+                    //             </View> */}
+                    //         </View>
+                    //     </View>
+                    // ))
+                    <FlatList
+                        data={searchTodos}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => (
+                            <View style={styles.todoCard}>
+                                <View style={styles.todoContent}>
+                                    <Text style={styles.todoTitle}>{item?.title}</Text>
+                                    <Text style={styles.todoDescription}>{item?.description}</Text>
+                                </View>
                             </View>
-                        </View>
-                    ))
+                        )}
+                    />
                 )}
             </ScrollView>
         </SafeAreaView>

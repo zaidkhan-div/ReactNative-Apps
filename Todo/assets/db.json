@@ -48,20 +48,20 @@
         },
         {
             "id": "5",
-            "title": "Title",
-            "description": "descriptio",
+            "title": "Operation",
+            "description": "Review PRs from the team",
             "priority": "low",
-            "dueDate": "2025-08-08",
-            "estimatedHours": "12",
-            "completed": false
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
+            "completed": true
         },
         {
             "id": "6",
-            "title": "new",
-            "description": "description",
-            "priority": "medium",
-            "dueDate": "2025-08-09",
-            "estimatedHours": "18",
+            "title": "Project Review",
+            "description": "Review PRs from the team",
+            "priority": "low",
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
             "completed": true
         },
         {
@@ -74,7 +74,7 @@
             "completed": true
         },
         {
-            "id": "7",
+            "id": "8",
             "title": "Today Task",
             "description": "Today i have to deliver Todo_App Task",
             "priority": "high",
@@ -83,11 +83,75 @@
         },
         {
             "id": "9",
-            "title": "title",
-            "description": "descri",
+            "title": "Code Review",
+            "description": "Review PRs from the team",
+            "priority": "low",
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
+            "completed": true
+        },
+        {
+            "id": "10",
+            "title": "React Native Practice",
+            "description": "Complete state management module with Redux Toolkit",
+            "priority": "medium",
+            "dueDate": "2025-08-28",
+            "estimatedHours": "5",
+            "completed": false
+        },
+        {
+            "id": "11",
+            "title": "Blog Writing",
+            "description": "Write a blog post about React performance optimization",
+            "priority": "low",
+            "dueDate": "2025-09-01",
+            "estimatedHours": "2",
+            "completed": false
+        },
+        {
+            "id": "12",
+            "title": "Portfolio Update",
+            "description": "Add new projects to portfolio website",
             "priority": "high",
-            "dueDate": "",
-            "estimatedHours": 0
+            "dueDate": "2025-09-05",
+            "estimatedHours": "4",
+            "completed": true
+        },
+        {
+            "id": "13",
+            "title": "UI Design",
+            "description": "Create mockups for a fitness app",
+            "priority": "medium",
+            "dueDate": "2025-09-07",
+            "estimatedHours": "6",
+            "completed": false
+        },
+        {
+            "id": "14",
+            "title": "Code Review",
+            "description": "Review PRs from the team",
+            "priority": "low",
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
+            "completed": true
+        },
+        {
+            "id": "15",
+            "title": "Code Review",
+            "description": "Review PRs from the team",
+            "priority": "low",
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
+            "completed": true
+        },
+        {
+            "id": "16",
+            "title": "Code Review",
+            "description": "Review PRs from the team",
+            "priority": "low",
+            "dueDate": "2025-08-30",
+            "estimatedHours": "1",
+            "completed": true
         }
     ]
 }

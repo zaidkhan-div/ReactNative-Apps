@@ -47,6 +47,7 @@ import Theme from "../utils/theme"
 import PerfectSize from "../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
+import ProgressBar from '../Components/ProgressBar'
 
 const Analytics = () => {
     return (
@@ -65,10 +66,8 @@ const Analytics = () => {
                 </Link>
             </View>
 
-            {/* Scrollable content */}
             <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={styles.container}>
-                    {/* Analytics Dashboard */}
                     <View style={styles.card}>
                         <Text style={styles.cardNumber}>12</Text>
                         <Text style={styles.cardLabel}>Total Tasks</Text>
@@ -77,15 +76,13 @@ const Analytics = () => {
                         </View>
                     </View>
 
-                    {/* Completion Rate */}
                     <View style={styles.card}>
                         <View style={styles.cardInner}>
-                            <Text>ProgressBar Here</Text>
+                            <ProgressBar completionRate={50} />
                             <Text style={styles.smallText}>Completion Rate</Text>
                         </View>
                     </View>
 
-                    {/* Productivity Score */}
                     <View style={styles.card}>
                         <Text style={styles.cardNumber}>85</Text>
                         <Text style={styles.cardLabel}>Productivity Score</Text>
@@ -94,7 +91,6 @@ const Analytics = () => {
                         </View>
                     </View>
 
-                    {/* Streak */}
                     <View style={styles.card}>
                         <Text style={styles.cardNumber}>7</Text>
                         <Text style={styles.cardLabel}>Day Streak</Text>
