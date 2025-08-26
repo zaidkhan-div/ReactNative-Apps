@@ -8,25 +8,27 @@ const Modal = () => {
     // const [openModal, setOpenModal] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [openModal, setOpenModal] = useState(false);
 
-    // const handleModal = () => {
-    //     setOpenModal(true);
-    // }
-    // const handleSubmit = () => {
-    //     console.log({ title, description });
-    //     setOpenModal(false);
-    // }
+    const handleModal = () => {
+        setOpenModal(true);
+    }
+    const handleSubmit = () => {
+        console.log({ title, description });
+        setOpenModal(false);
+    }
 
     return (
         <>
-            <TouchableOpacity style={styles.iconWrapper} >
-                <Link href="/modal">
+            <TouchableOpacity onPress={handleModal} style={styles.iconWrapper} >
+                {/* <Link href="/modal">
                     <Icon name="plus" size={30} color="white" />
-                </Link>
+                </Link> */}
+                <Icon name="plus" size={30} color="white" />
             </TouchableOpacity>
 
             {/* Modal */}
-            {/* <RNModal visible={openModal} animationType="fade" transparent={true}>
+            <RNModal style={styles.modalContainer} visible={openModal} animationType="fade" transparent={true}>
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalTitle}>Add Todo</Text>
@@ -59,7 +61,7 @@ const Modal = () => {
                         </View>
                     </View>
                 </View>
-            </RNModal> */}
+            </RNModal>
         </>
     );
 };
@@ -78,9 +80,13 @@ const styles = StyleSheet.create({
         bottom: 55,
         right: 20,
     },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "red"
+    },
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        backgroundColor: '#00000070',
         justifyContent: 'center',
         alignItems: 'center',
     },

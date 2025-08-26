@@ -16,6 +16,7 @@ const Modal = () => {
             text2: "Your todo added successfully!",
             props: { style: { backgroundColor: Theme.colors.primary } }
         });
+
     }
 
     return (
@@ -61,11 +62,14 @@ export default Modal
 const styles = StyleSheet.create({
     container: {
         height: "100%",
-        display: "flex",
+        backgroundColor: "#00000070",
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "#00000070",
         alignItems: "stretch",
         justifyContent: "center"
     },
-    modalOverlay: {},
     modalContainer: {
         width: '85%',
         backgroundColor: 'white',

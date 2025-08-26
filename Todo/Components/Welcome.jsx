@@ -7,16 +7,21 @@ import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { Link } from 'expo-router';
 import axios from "axios"
+import { useGetTodosQuery } from "../features/ApiCalling"
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const { data: todosData, isLoading } = useGetTodosQuery();
+
+    console.log(todosData, "TodosData");
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true);
+                // setLoading(true);
                 const response = await axios.get("http://192.168.0.119:3000/todos");
                 setTimeout(() => {
                     setData(response.data);
@@ -30,7 +35,16 @@ const Welcome = () => {
         fetchData();
     }, []);
 
-    const searchTodos = data.filter((item, index) => {
+    // const searchTodos = todosData ? todosData.filter((item, index) => {
+    //     if (inputVal.trim()) {
+    //         const input = inputVal.toLowerCase();
+    //         return item?.title.toLowerCase().includes(input);
+    //     } else {
+    //         return item
+    //     }
+    // }) : [];
+
+    const searchTodos = data.filter((item) => {
         if (inputVal.trim()) {
             const input = inputVal.toLowerCase();
             return item?.title.toLowerCase().includes(input);
@@ -38,8 +52,6 @@ const Welcome = () => {
             return item
         }
     });
-
-    console.log(searchTodos);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -72,7 +84,7 @@ const Welcome = () => {
                 </View>
             </View>
 
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 {loading ? (
                     // <Text style={styles.loading}>Loading...</Text>
                     <View style={styles.loader}>
@@ -117,7 +129,7 @@ const Welcome = () => {
                         )}
                     />
                 )}
-            </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -126,7 +138,6 @@ export default Welcome;
 
 const styles = StyleSheet.create({
     iconsContainer: {
-        display: "fle",
         flexDirection: "row",
         paddingHorizontal: 5,
         justifyContent: "space-between",
