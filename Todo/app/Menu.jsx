@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
 import Theme from "../utils/theme"
 import PerfectSize from "../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
@@ -19,55 +19,69 @@ const Menu = () => {
             <ScrollView style={styles.navigationContainer}>
                 <Text style={styles.navText}>navigation</Text>
 
-                <View style={[
-                    styles.listContainer,
-                    active === "All Tasks" && { backgroundColor: Theme.colors.primary } // only applies if active = true
-                ]} >
-                    <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
+                <TouchableOpacity
+                    onPress={() => setAcitve("All Tasks")}
+                    style={[
+                        styles.listContainer,
+                        active === "All Tasks" && { backgroundColor: Theme.colors.primary, color: "white" }
+                    ]} >
+                    <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
                                 source={require("../assets/images/knowledge.png")} />
                         </View>
-                        <Text style={styles.listText}>All Tasks</Text>
+                        <Text style={active === "All Tasks" && { color: "white" }}>All Tasks</Text>
                     </View>
                     <Text style={styles.listNumber}>12</Text>
-                </View>
+                </TouchableOpacity>
 
-                <View style={[
-                    styles.listContainer,
-                    active === "Important" && { backgroundColor: Theme.colors.primary } // only applies if active = true
-                ]} >
+                <TouchableOpacity
+                    onPress={() => setAcitve("Important")}
+                    style={[
+                        styles.listContainer,
+                        active === "Important" && { backgroundColor: Theme.colors.primary, color: "white" }
+                    ]} >
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
                                 source={require("../assets/images/roblox.png")} />
                         </View>
-                        <Text style={styles.listText}>Important</Text>
+                        <Text style={active === "Important" && { color: "white" }}>Important</Text>
                     </View>
                     <Text style={styles.listNumber}>8</Text>
-                </View>
+                </TouchableOpacity>
 
-                <View style={styles.listContainer}>
-                    <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
+                <TouchableOpacity
+                    onPress={() => setAcitve("Today")}
+                    style={[
+                        styles.listContainer,
+                        active === "Today" && { backgroundColor: Theme.colors.primary }
+                    ]}>
+                    <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
                                 source={require("../assets/images/calendar.png")} />
                         </View>
-                        <Text style={styles.listText}>Today</Text>
+                        <Text style={active === "Today" && { color: "white" }}>Today</Text>
                     </View>
                     <Text style={styles.listNumber}>4</Text>
-                </View>
+                </TouchableOpacity>
 
-                <View style={styles.listContainer}>
+                <TouchableOpacity
+                    onPress={() => setAcitve("Analytics")}
+                    style={[
+                        styles.listContainer,
+                        active === "Analytics" && { backgroundColor: Theme.colors.primary }
+                    ]}>
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
                                 source={require("../assets/images/analysis.png")} />
                         </View>
-                        <Text style={styles.listText}>Analytics</Text>
+                        <Text style={active === "Analytics" && { color: "white" }}>Analytics</Text>
                     </View>
                     <Text style={styles.listNumber}>12</Text>
-                </View>
+                </TouchableOpacity>
 
             </ScrollView >
 
@@ -128,8 +142,6 @@ const styles = StyleSheet.create({
     listText: {
         fontSize: PerfectSize(20),
         fontWeight: "600",
-        color: "black",
-
     },
     listNumber: {
         backgroundColor: "red",
