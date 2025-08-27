@@ -61,7 +61,7 @@ const Welcome = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View>
-                <View style={styles.iconsContainer}>
+                {/* <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.menuWrapper}>
                         <Link href="/Menu">
                             <Icon name="menu" size={30} color={Theme.colors.primary} />
@@ -72,7 +72,7 @@ const Welcome = () => {
                             <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
                         </Link>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View style={styles.inputContainer}>
                     {/* <View style={styles.inputWrapper}> */}

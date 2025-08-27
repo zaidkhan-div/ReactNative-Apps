@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
-import Theme from "../utils/theme"
-import PerfectSize from "../utils/PerfectSize"
+import Theme from "../../utils/theme"
+import PerfectSize from "../../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
 import { useState } from 'react'
@@ -28,7 +28,7 @@ const Menu = () => {
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
-                                source={require("../assets/images/knowledge.png")} />
+                                source={require("../../assets/images/knowledge.png")} />
                         </View>
                         <Text style={active === "All Tasks" && { color: "white" }}>All Tasks</Text>
                     </View>
@@ -44,7 +44,7 @@ const Menu = () => {
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
-                                source={require("../assets/images/roblox.png")} />
+                                source={require("../../assets/images/roblox.png")} />
                         </View>
                         <Text style={active === "Important" && { color: "white" }}>Important</Text>
                     </View>
@@ -60,7 +60,7 @@ const Menu = () => {
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
-                                source={require("../assets/images/calendar.png")} />
+                                source={require("../../assets/images/calendar.png")} />
                         </View>
                         <Text style={active === "Today" && { color: "white" }}>Today</Text>
                     </View>
@@ -76,7 +76,7 @@ const Menu = () => {
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
-                                source={require("../assets/images/analysis.png")} />
+                                source={require("../../assets/images/analysis.png")} />
                         </View>
                         <Text style={active === "Analytics" && { color: "white" }}>Analytics</Text>
                     </View>

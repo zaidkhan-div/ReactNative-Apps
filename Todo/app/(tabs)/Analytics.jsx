@@ -43,11 +43,11 @@
 // })
 
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
-import Theme from "../utils/theme"
-import PerfectSize from "../utils/PerfectSize"
+import Theme from "../../utils/theme"
+import PerfectSize from "../../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
-import ProgressBar from '../Components/ProgressBar'
+import ProgressBar from '../../Components/ProgressBar'
 
 const Analytics = () => {
     return (
