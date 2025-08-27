@@ -7,56 +7,61 @@ import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { Link } from 'expo-router';
 import axios from "axios"
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetTodosQuery } from "../features/ApiCalling"
+import { setTodo } from '@/features/TodoSlice';
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    const { data: todosData, isLoading } = useGetTodosQuery();
-
-    console.log(todosData, "TodosData");
+    const dispatch = useDispatch();
+    const { data: todosData, isLoading, isSuccess } = useGetTodosQuery();
+    console.log(todosData, "TodosRTK");
+    let todos = useSelector((state) => state.todoSlice.todo);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // setLoading(true);
-                const response = await axios.get("http://192.168.0.119:3000/todos");
-                setTimeout(() => {
-                    setData(response.data);
-                    setLoading(false);
-                }, 3000);
-            } catch (error) {
-                console.log(error.message);
-                setLoading(false);
-            }
+        // const fetchData = async () => {
+        //     try {
+        //         // setLoading(true);
+        //         const response = await axios.get("http://192.168.0.119:3000/todos");
+        //         setTimeout(() => {
+        //             setData(response.data);
+        //             setLoading(false);
+        //         }, 3000);
+        //     } catch (error) {
+        //         console.log(error.message);
+        //         setLoading(false);
+        //     }
+        // }
+        // fetchData();
+        if (isSuccess) {
+            dispatch(setTodo(todosData))
         }
-        fetchData();
-    }, []);
+    }, [todosData]);
 
-    // const searchTodos = todosData ? todosData.filter((item, index) => {
+    // const searchTodos = data.filter((item) => {
     //     if (inputVal.trim()) {
     //         const input = inputVal.toLowerCase();
     //         return item?.title.toLowerCase().includes(input);
     //     } else {
     //         return item
     //     }
-    // }) : [];
+    // });
 
-    const searchTodos = data.filter((item) => {
+    const searchTodos = todos.filter((item) => {
         if (inputVal.trim()) {
             const input = inputVal.toLowerCase();
             return item?.title.toLowerCase().includes(input);
         } else {
             return item
         }
-    });
+    }).reverse();
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View>
-                <View style={styles.iconsContainer}>
+                {/* <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.menuWrapper}>
                         <Link href="/Menu">
                             <Icon name="menu" size={30} color={Theme.colors.primary} />
@@ -67,7 +72,7 @@ const Welcome = () => {
                             <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
                         </Link>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View style={styles.inputContainer}>
                     {/* <View style={styles.inputWrapper}> */}
@@ -85,7 +90,7 @@ const Welcome = () => {
             </View>
 
             <View style={styles.container}>
-                {loading ? (
+                {isLoading ? (
                     // <Text style={styles.loading}>Loading...</Text>
                     <View style={styles.loader}>
                         <ActivityIndicator size="large" color={Theme.colors.primary} />

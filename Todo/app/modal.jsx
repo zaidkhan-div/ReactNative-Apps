@@ -16,7 +16,6 @@ const Modal = () => {
             text2: "Your todo added successfully!",
             props: { style: { backgroundColor: Theme.colors.primary } }
         });
-
     }
 
     return (

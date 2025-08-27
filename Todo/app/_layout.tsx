@@ -7,12 +7,12 @@ export default function RootLayout() {
     <Provider store={store}>
       <Stack screenOptions={{ headerShown: false }} >
         <Stack.Screen name="index" />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="modal"
           options={{
             presentation: 'modal',
           }}
-        />
+        /> */}
       </Stack>
     </Provider>
   );

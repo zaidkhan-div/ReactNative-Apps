@@ -3,9 +3,12 @@ import Theme from "../utils/theme"
 import PerfectSize from "../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
+import { useState } from 'react'
 
 
 const Menu = () => {
+    const [active, setAcitve] = useState("All Tasks");
+
     return (
         <>
             <View style={styles.iconContainer}>
@@ -16,7 +19,10 @@ const Menu = () => {
             <ScrollView style={styles.navigationContainer}>
                 <Text style={styles.navText}>navigation</Text>
 
-                <View style={styles.listContainer}>
+                <View style={[
+                    styles.listContainer,
+                    active === "All Tasks" && { backgroundColor: Theme.colors.primary } // only applies if active = true
+                ]} >
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
@@ -27,7 +33,10 @@ const Menu = () => {
                     <Text style={styles.listNumber}>12</Text>
                 </View>
 
-                <View style={styles.listContainer}>
+                <View style={[
+                    styles.listContainer,
+                    active === "Important" && { backgroundColor: Theme.colors.primary } // only applies if active = true
+                ]} >
                     <View style={[{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }]}>
                         <View style={styles.listIcon}>
                             <Image style={[styles.listImg, { width: 30, height: 30 }]}
@@ -60,7 +69,7 @@ const Menu = () => {
                     <Text style={styles.listNumber}>12</Text>
                 </View>
 
-            </ScrollView>
+            </ScrollView >
 
         </>
     )
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         borderWidth: 1,
-        borderColor: "red",
+        borderWidth: 0,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -105,7 +114,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         paddingTop: 20,
         paddingBottom: 20,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        backgroundColor: "white",
+        shadowColor: "#00000",
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 5,
     },
     listIcon: {},
     // listImg: {

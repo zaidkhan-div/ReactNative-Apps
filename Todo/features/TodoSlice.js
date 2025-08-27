@@ -4,12 +4,10 @@ const TodoSlice = createSlice({
     name: "TodoSlice",
     initialState: {
         todo: [],
-        filterTodo: []
     },
     reducers: {
         setTodo: (state, action) => {
             state.todo = action.payload;
-            state.filterTodo = action.payload;
         }
     }
 });

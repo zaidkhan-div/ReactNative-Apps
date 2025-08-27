@@ -3,19 +3,37 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Theme from '../utils/theme';
 import { useState } from 'react';
 import { Link } from 'expo-router';
+import Toast from 'react-native-toast-message';
+import { useAddTodoMutation } from '@/features/ApiCalling';
 
 const Modal = () => {
     // const [openModal, setOpenModal] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [openModal, setOpenModal] = useState(false);
+    const [addNewTodo, resultObject] = useAddTodoMutation();
 
     const handleModal = () => {
         setOpenModal(true);
     }
-    const handleSubmit = () => {
-        console.log({ title, description });
+    const handleSubmit = async () => {
         setOpenModal(false);
+        try {
+            let obj = {
+                title: title,
+                description: description
+            }
+            await addNewTodo(obj);
+            setTitle("")
+            setDescription("")
+        } catch (error) {
+            // Toast.show({
+            //     type: "error",
+            //     text1: "error",
+            //     text2: "Something went wrong!"
+            // })
+            Toast.error("Something went wrong!")
+        }
     }
 
     return (
@@ -62,6 +80,7 @@ const Modal = () => {
                     </View>
                 </View>
             </RNModal>
+            <Toast />
         </>
     );
 };

@@ -4,8 +4,8 @@ import ApiCalling from "@/features/ApiCalling";
 
 export const store = configureStore({
     reducer: {
-        [ApiCalling.reducerPath]: ApiCalling, //api
-        todo: TodoSlice,
+        [ApiCalling.reducerPath]: ApiCalling.reducer, //api
+        todoSlice: TodoSlice,
     },
     middleware: (getDefaultMiddlewar) =>
         getDefaultMiddlewar().concat(ApiCalling.middleware)
