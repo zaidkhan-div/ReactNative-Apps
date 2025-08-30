@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
-import Theme from "../../utils/theme"
-import PerfectSize from "../../utils/PerfectSize"
-import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
 import { useState } from 'react'
-
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from "react-native-vector-icons/Feather"
+import PerfectSize from "../../utils/PerfectSize"
+import Theme from "../../utils/theme"
 
 const Menu = () => {
     const [active, setAcitve] = useState("All Tasks");
