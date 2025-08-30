@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         flex: 1,
+        paddingHorizontal: 8
     },
     loading: {
         textAlign: 'center',

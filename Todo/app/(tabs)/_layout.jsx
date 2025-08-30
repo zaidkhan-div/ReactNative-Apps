@@ -13,6 +13,7 @@ const TabLayout = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: "absolute",
+                    height: 62,
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center"
@@ -118,6 +119,32 @@ const TabLayout = () => {
                                 fontSize: 12
                             }}>
                                 Signup
+                            </Text>
+                        </View>
+                    )
+                }}
+            />
+            <Tabs.Screen
+                name='Login'
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{
+                            alignItems: "center",
+                            paddingTop: 10,
+                            width: 100
+                        }}
+                        >
+                            <Ionicons
+                                name={focused ? "Login" : "login-outline"}
+                                color={focused ? Theme.colors.primary : "Login-outline"}
+                                size={24}
+                            />
+                            <Text style={{
+                                color: focused ? Theme.colors.primary : "gray",
+                                marginTop: 4,
+                                fontSize: 12
+                            }}>
+                                Login
                             </Text>
                         </View>
                     )

@@ -1,20 +1,35 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
 import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
+import { Link } from 'expo-router'
 
 const Signup = () => {
+    const [name, setName] = useState("");
+
+    // http://192.168.0.126:4000/auth/signup
+
+    useEffect(() => {
+        
+    }, [])
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={styles.textWrapper}>
-                    <Text style={styles.title}>Sing up</Text>
-                    <Text style={styles.signupPara}>Hey! Welcome back you have been missed</Text>
+                    <Text style={styles.title}>Sign up</Text>
+                    <Text style={styles.signupPara}>Hey! Welcome to the Todo Application!</Text>
                 </View>
                 {/* Form */}
                 <View style={styles.formContainer}>
+                    <View style={styles.formItem}>
+                        <Label style={styles.label}>Name</Label>
+                        <TextInput placeholderTextColor="#999"
+                            style={styles.input}
+                            placeholder='Enter your name' />
+                    </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Email</Label>
                         <TextInput placeholderTextColor="#999"
@@ -36,7 +51,9 @@ const Signup = () => {
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Already have an account?</Text>
-                    <Text style={styles.footerLink}>Login</Text>
+                    <Link href="/Login">
+                        <Text style={styles.footerLink}>Login</Text>
+                    </Link>
                 </View>
             </View>
         </SafeAreaView>
@@ -81,6 +98,15 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         textAlign: "left"
     },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
+        paddingHorizontal: 14,
+        paddingVertical: 12,
+        fontSize: 14,
+        color: "#000"
+    },
     btn: {
         backgroundColor: Theme.colors.primary || "#4f46e5",
         paddingVertical: 14,
@@ -95,7 +121,8 @@ const styles = StyleSheet.create({
     footer: {
         flexDirection: "row",
         justifyContent: "center",
-        marginTop: 8
+        marginTop: 8,
+        gap: 5
     },
     footerText: {
         fontSize: 14,

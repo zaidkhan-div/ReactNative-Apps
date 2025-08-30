@@ -4,9 +4,11 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import Icon from "react-native-vector-icons/Feather"
 import PerfectSize from "../../utils/PerfectSize"
 import Theme from "../../utils/theme"
+import { useSelector } from 'react-redux'
 
 const Menu = () => {
-    const [active, setAcitve] = useState("All Tasks");
+    const [active, setActive] = useState("All Tasks");
+    let todos = useSelector((state) => state.todoSlice.todo);
 
     return (
         <>
@@ -19,7 +21,7 @@ const Menu = () => {
                 <Text style={styles.navText}>navigation</Text>
 
                 <TouchableOpacity
-                    onPress={() => setAcitve("All Tasks")}
+                    onPress={() => setActive("All Tasks")}
                     style={[
                         styles.listContainer,
                         active === "All Tasks" && { backgroundColor: Theme.colors.primary, color: "white" }
@@ -31,11 +33,11 @@ const Menu = () => {
                         </View>
                         <Text style={active === "All Tasks" && { color: "white" }}>All Tasks</Text>
                     </View>
-                    <Text style={styles.listNumber}>12</Text>
+                    <Text style={styles.listNumber}>{todos.length}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => setAcitve("Important")}
+                    onPress={() => setActive("Important")}
                     style={[
                         styles.listContainer,
                         active === "Important" && { backgroundColor: Theme.colors.primary, color: "white" }
@@ -51,7 +53,7 @@ const Menu = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => setAcitve("Today")}
+                    onPress={() => setActive("Today")}
                     style={[
                         styles.listContainer,
                         active === "Today" && { backgroundColor: Theme.colors.primary }
@@ -67,7 +69,7 @@ const Menu = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => setAcitve("Analytics")}
+                    onPress={() => setActive("Analytics")}
                     style={[
                         styles.listContainer,
                         active === "Analytics" && { backgroundColor: Theme.colors.primary }
@@ -132,6 +134,7 @@ const styles = StyleSheet.create({
         shadowColor: "#00000",
         shadowOffset: { width: 0, height: 2 },
         elevation: 5,
+        paddingHorizontal: 14
     },
     listIcon: {},
     // listImg: {
