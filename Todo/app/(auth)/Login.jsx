@@ -1,12 +1,54 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
 import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
 import { Link } from 'expo-router'
+import Toast from 'react-native-toast-message'
+import { signInStart, signInSucces, signInFailure } from '../../features/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { ActivityIndicator } from 'react-native'
 
 const Login = () => {
+
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    })
+    const dispatch = useDispatch();
+    const { loading } = useSelector((state) => state.user);
+
+    const handleSubmit = async () => {
+        try {
+            if (formData.email.trim() && formData.password.trim()) {
+                dispatch(signInStart())
+                const response = await fetch("192.168.0.126:4000/auth/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+                if (response.ok) {
+                    Toast.show({
+                        type: "success",
+                        text1: "Login Successfully",
+                        text2: "Welcome back!"
+                    });
+                }
+                setFormData({
+                    email: "",
+                    password: ""
+                })
+                dispatch(signInSucces());
+            }
+        } catch (error) {
+
+        }
+
+    }
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
@@ -18,21 +60,27 @@ const Login = () => {
                 <View style={styles.formContainer}>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Email</Label>
-                        <TextInput placeholderTextColor="#999"
+                        <TextInput value={formData.email} onChangeText={(text) => setFormData({ ...formData, password: text })} placeholderTextColor="#999"
                             style={styles.input}
                             placeholder='example@gmail.com' />
                     </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Password</Label>
-                        <TextInput placeholderTextColor="#999"
+                        <TextInput value={formData.password} onChangeText={(text) => setFormData({ ...formData, email: text })} placeholderTextColor="#999"
                             style={styles.input}
                             placeholder='Password'
                             secureTextEntry={true} />
                     </View>
                 </View>
                 {/* Buttons */}
-                <TouchableOpacity style={styles.btn}>
-                    <Text style={styles.btnText}>Login</Text>
+                <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                    {
+                        loading ?
+                            <ActivityIndicator animating={true} />
+                            :
+                            <Text style={styles.btnText}>Login</Text>
+
+                    }
                 </TouchableOpacity>
                 {/* Footer */}
                 <View style={styles.footer}>

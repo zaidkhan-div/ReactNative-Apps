@@ -223,8 +223,8 @@ const styles = StyleSheet.create({
     },
     todoTitle: {
         fontSize: 18,
-        fontWeight: '600',
-        color: '#000',
+        fontWeight: '500',
+        color: '#1e1e2cff',
     },
     todoDescription: {
         fontSize: 14,

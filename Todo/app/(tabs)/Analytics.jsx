@@ -53,7 +53,7 @@ const Analytics = () => {
     return (
         <>
             {/* Header */}
-            <View style={styles.iconContainer}>
+            <SafeAreaView style={styles.iconContainer}>
                 <Link href='/' asChild>
                     <TouchableOpacity>
                         <Icon name='arrow-left' size={25} color="white" />
@@ -64,9 +64,9 @@ const Analytics = () => {
                         <Text style={styles.iconText}>Back</Text>
                     </TouchableOpacity>
                 </Link>
-            </View>
+            </SafeAreaView>
 
-            <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={styles.container}>
                     <View style={styles.card}>
                         <Text style={styles.cardNumber}>12</Text>
@@ -96,7 +96,7 @@ const Analytics = () => {
                         <Text style={styles.cardLabel}>Day Streak</Text>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+            </View>
         </>
     )
 }

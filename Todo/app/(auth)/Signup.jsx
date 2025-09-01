@@ -1,19 +1,82 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
 import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
 import { Link } from 'expo-router'
+import axios from 'axios'
+import Toast from 'react-native-toast-message'
+import { useDispatch, useSelector } from 'react-redux'
+import { signInStart, signInFailure, signInSucces } from "../../features/userSlice"
+import { ActivityIndicator } from 'react-native'
 
 const Signup = () => {
-    const [name, setName] = useState("");
+
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: ""
+    });
+
+    const { loading, error: errorMessage } = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+
+    // 2. The problem
+    // When you type in Name, you want to update only name but keep email and password safe.
+    // If you wrote this:
+    // setFormData({ name: text });
+    // ❌ Wrong — because now state becomes:
+    // { name: "Zaid" }
+    // 👉 and email + password are lost (removed).
+    // 3. The solution → ...formData
+    // ...formData means:
+    // “copy everything from the old state”.
+    // So this:
+    // setFormData({ ...formData, name: text });
+    //     setFormData({ ...formData, name: text });
+    // Here:
+    // ...formData → copies everything already inside formData (email, password, etc.)
+    // name: text → updates only the name field.
+    // So the new state becomes:
+    // { name: "Zaid", email: "oldEmail", password: "oldPassword" }
 
     // http://192.168.0.126:4000/auth/signup
 
-    useEffect(() => {
-        
-    }, [])
+    const handleSubmit = async () => {
+        try {
+            if (formData.username.trim() && formData.email.trim() && formData.password.trim()) {
+                dispatch(signInStart());
+                const response = await axios.post("http://192.168.0.126:4000/auth/signup", formData);
+                if (response.status === 201 || response.status === 200) {
+                    Toast.show({
+                        type: "success",
+                        text1: "Singup successfully!",
+                        text2: "Welcome to the Todo Application"
+                    });
+                    setFormData({
+                        username: "",
+                        email: "",
+                        password: ""
+                    });
+                    dispatch(signInSucces())
+                }
+            } else {
+                Toast.show({
+                    type: "error",
+                    text1: "Please fill out the form!"
+                })
+            }
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Invalid Credential!",
+                text2: error.message
+            });
+            dispatch(signInFailure("Something went wrong!"));
+        }
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -27,26 +90,38 @@ const Signup = () => {
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Name</Label>
                         <TextInput placeholderTextColor="#999"
+                            value={formData.username}
+                            onChangeText={(text) => setFormData({ ...formData, username: text })}
                             style={styles.input}
                             placeholder='Enter your name' />
                     </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Email</Label>
                         <TextInput placeholderTextColor="#999"
+                            value={formData.email}
+                            onChangeText={(text) => setFormData({ ...formData, email: text })}
                             style={styles.input}
                             placeholder='example@gmail.com' />
                     </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Password</Label>
                         <TextInput placeholderTextColor="#999"
+                            value={formData.password}
                             style={styles.input}
+                            onChangeText={(text) => setFormData({ ...formData, password: text })}
                             placeholder='Password'
                             secureTextEntry={true} />
                     </View>
                 </View>
                 {/* Buttons */}
-                <TouchableOpacity style={styles.btn}>
-                    <Text style={styles.btnText}>Create Account</Text>
+                <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                    {
+                        loading ?
+                            <ActivityIndicator animating={true} color={Theme.colors.white} />
+                            :
+                            <Text style={styles.btnText}>Create Account</Text>
+                    }
+
                 </TouchableOpacity>
                 {/* Footer */}
                 <View style={styles.footer}>
