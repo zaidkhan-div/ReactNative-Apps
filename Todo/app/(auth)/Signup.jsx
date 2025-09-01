@@ -61,6 +61,8 @@ const Signup = () => {
                     });
                     dispatch(signInSucces())
                 }
+                console.log(response, "response");
+
             } else {
                 Toast.show({
                     type: "error",
@@ -124,6 +126,7 @@ const Signup = () => {
 
                 </TouchableOpacity>
                 {/* Footer */}
+
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Already have an account?</Text>
                     <Link href="/Login">

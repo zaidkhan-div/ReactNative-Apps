@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { store } from "../app/store"
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
@@ -7,7 +7,7 @@ import Toast from "react-native-toast-message";
 export default function RootLayout() {
 
   const isloggedIn = false;
-
+  
   return (
     <Provider store={store} >
       <SafeAreaProvider>

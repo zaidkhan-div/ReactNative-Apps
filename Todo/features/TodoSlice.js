@@ -4,11 +4,13 @@ const TodoSlice = createSlice({
     name: "TodoSlice",
     initialState: {
         todo: [],
+    
     },
     reducers: {
         setTodo: (state, action) => {
             state.todo = action.payload;
         },
+
     }
 });
 

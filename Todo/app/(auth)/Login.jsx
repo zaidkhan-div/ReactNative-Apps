@@ -6,9 +6,11 @@ import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
 import { Link } from 'expo-router'
 import Toast from 'react-native-toast-message'
-import { signInStart, signInSucces, signInFailure } from '../../features/userSlice'
+import { signInStart, signInSucces, signInFailure, loginSucces } from '../../features/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActivityIndicator } from 'react-native'
+import { useRouter } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Login = () => {
 
@@ -18,33 +20,44 @@ const Login = () => {
     })
     const dispatch = useDispatch();
     const { loading } = useSelector((state) => state.user);
+    const router = useRouter();
 
     const handleSubmit = async () => {
+        if (!formData.email || !formData.password) {
+            dispatch(signInFailure("Email and password are required"));
+            return;
+        }
         try {
+            dispatch(signInStart())
             if (formData.email.trim() && formData.password.trim()) {
-                dispatch(signInStart())
-                const response = await fetch("192.168.0.126:4000/auth/signup", {
+                const response = await fetch("http://192.168.0.126:4000/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
                     },
                     body: JSON.stringify(formData)
                 });
-                if (response.ok) {
-                    Toast.show({
-                        type: "success",
-                        text1: "Login Successfully",
-                        text2: "Welcome back!"
-                    });
+                const result = await response.json();
+
+                if (!response.ok) {
+                    dispatch(signInFailure(result.message || "Invalid credentials"));
+                    return;
                 }
+                const { accessToken, refreshToken } = result.data;
+                dispatch(loginSucces({ accessToken, refreshToken }));
                 setFormData({
                     email: "",
                     password: ""
-                })
-                dispatch(signInSucces());
+                });
+
             }
         } catch (error) {
-
+            Toast.show({
+                type: "error",
+                text1: "Login Failed",
+                text2: error.message
+            });
+            dispatch(signInFailure());
         }
 
     }
@@ -60,13 +73,13 @@ const Login = () => {
                 <View style={styles.formContainer}>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Email</Label>
-                        <TextInput value={formData.email} onChangeText={(text) => setFormData({ ...formData, password: text })} placeholderTextColor="#999"
+                        <TextInput value={formData.email} onChangeText={(text) => setFormData({ ...formData, email: text })} placeholderTextColor="#999"
                             style={styles.input}
                             placeholder='example@gmail.com' />
                     </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Password</Label>
-                        <TextInput value={formData.password} onChangeText={(text) => setFormData({ ...formData, email: text })} placeholderTextColor="#999"
+                        <TextInput value={formData.password} onChangeText={(text) => setFormData({ ...formData, password: text })} placeholderTextColor="#999"
                             style={styles.input}
                             placeholder='Password'
                             secureTextEntry={true} />
@@ -76,12 +89,14 @@ const Login = () => {
                 <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                     {
                         loading ?
-                            <ActivityIndicator animating={true} />
+                            <ActivityIndicator animating={true} color={Theme.colors.white} />
                             :
                             <Text style={styles.btnText}>Login</Text>
 
                     }
+
                 </TouchableOpacity>
+
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Did not have an account login?</Text>
