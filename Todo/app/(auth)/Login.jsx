@@ -19,18 +19,18 @@ const Login = () => {
         password: ""
     })
     const dispatch = useDispatch();
-    const { loading } = useSelector((state) => state.user);
+    const { loading, error: errorMessage } = useSelector((state) => state.user);
     const router = useRouter();
 
     const handleSubmit = async () => {
         if (!formData.email || !formData.password) {
-            dispatch(signInFailure("Email and password are required"));
+            dispatch(signInFailure("Email and password are required!"));
             return;
         }
         try {
             dispatch(signInStart())
             if (formData.email.trim() && formData.password.trim()) {
-                const response = await fetch("http://192.168.0.126:4000/auth/login", {
+                const response = await fetch("http://192.168.0.107:4000/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -44,11 +44,15 @@ const Login = () => {
                     return;
                 }
                 const { accessToken, refreshToken } = result.data;
-                dispatch(loginSucces({ accessToken, refreshToken }));
+                AsyncStorage.setItem("accessToken", accessToken);
+                console.log(accessToken, "AccessToken");
+
+                await dispatch(loginSucces({ accessToken, refreshToken }));
                 setFormData({
                     email: "",
                     password: ""
                 });
+                router.push("/");
 
             }
         } catch (error) {
@@ -79,12 +83,19 @@ const Login = () => {
                     </View>
                     <View style={styles.formItem}>
                         <Label style={styles.label}>Password</Label>
-                        <TextInput value={formData.password} onChangeText={(text) => setFormData({ ...formData, password: text })} placeholderTextColor="#999"
+                        <TextInput value={formData.password}
+                            onChangeText={(text) => setFormData({ ...formData, password: text })} placeholderTextColor="#999"
                             style={styles.input}
                             placeholder='Password'
                             secureTextEntry={true} />
                     </View>
+                    {
+                        errorMessage ?
+                            <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>
+                            : ""
+                    }
                 </View>
+
                 {/* Buttons */}
                 <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                     {

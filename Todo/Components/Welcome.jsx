@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
-import NewIcon from "react-native-vector-icons/Ionicons";
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { Link } from 'expo-router';
@@ -10,53 +9,35 @@ import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetTodosQuery } from "../features/ApiCalling"
 import { setTodo } from '@/features/TodoSlice';
+import Checkbox from 'expo-checkbox';
+
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const [isChecked, setChecked] = useState(false);
     const { data: todosData, isLoading, isSuccess } = useGetTodosQuery();
-    console.log(todosData, "TodosRTK");
     let todos = useSelector((state) => state.todoSlice.todo);
 
+
     useEffect(() => {
-        // const fetchData = async () => {
-        //     try {
-        //         // setLoading(true);
-        //         const response = await axios.get("http://192.168.0.119:3000/todos");
-        //         setTimeout(() => {
-        //             setData(response.data);
-        //             setLoading(false);
-        //         }, 3000);
-        //     } catch (error) {
-        //         console.log(error.message);
-        //         setLoading(false);
-        //     }
-        // }
-        // fetchData();
         if (isSuccess) {
-            dispatch(setTodo(todosData))
+            dispatch(setTodo(todosData?.data?.allTask))
         }
     }, [todosData]);
-
-    // const searchTodos = data.filter((item) => {
-    //     if (inputVal.trim()) {
-    //         const input = inputVal.toLowerCase();
-    //         return item?.title.toLowerCase().includes(input);
-    //     } else {
-    //         return item
-    //     }
-    // });
 
     const searchTodos = todos.filter((item) => {
         if (inputVal.trim()) {
             const input = inputVal.toLowerCase();
             return item?.title.toLowerCase().includes(input);
         } else {
-            return item
+            return item;
         }
     }).reverse();
+
+    const handleComplete = () => {
+
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -96,39 +77,54 @@ const Welcome = () => {
                         <ActivityIndicator size="large" color={Theme.colors.primary} />
                     </View>
                 ) : (
-                    // searchTodos?.map((item, index) => (
-                    //     <View key={index} style={styles.todoCard}>
-                    //         {/* <CheckBox
-                    //             value={item?.completed}
-                    //             onValueChange={(value) => handleCheckbox(value, item)}
-                    //         /> */}
-                    //         <View style={styles.todoContent}>
-                    //             <Text style={styles.todoTitle}>{item?.title}</Text>
-                    //             <Text style={styles.todoDescription}>{item?.description}</Text>
-
-                    //             {/* <View style={styles.badgeContainer}>
-                    //                 <Text
-                    //                     style={[
-                    //                         styles.priorityBadge,
-                    //                         item?.priority === 'high' ? styles.priorityHigh : styles.priorityNormal
-                    //                     ]}
-                    //                 >
-                    //                     {item?.priority}
-                    //                 </Text>
-                    //                 <Text style={styles.badge}>Due: {item?.dueDate}</Text>
-                    //                 <Text style={styles.badge}>Estimated: {item?.estimatedHours}</Text>
-                    //             </View> */}
-                    //         </View>
-                    //     </View>
-                    // ))
                     <FlatList
                         data={searchTodos}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => (
                             <View style={styles.todoCard}>
+                                {/* Status */}
+                                {/* <Text style={{ fontSize: 12, color: item.completed ? "green" : "red" }}>
+                                    {item.completed ? "Completed" : "Pending"}
+                                </Text> */}
+
+                                <TouchableOpacity style={styles.checkBoxContainer} onPress={handleComplete}>
+                                    <Checkbox value={item?.completed} onValueChange={setChecked} />
+                                </TouchableOpacity>
+
+                                {/* Content */}
                                 <View style={styles.todoContent}>
-                                    <Text style={styles.todoTitle}>{item?.title}</Text>
-                                    <Text style={styles.todoDescription}>{item?.description}</Text>
+                                    <Text style={styles.todoTitle}>{item.title}</Text>
+                                    <Text style={styles.todoDescription}>
+                                        {item.description || "No description provided"}
+                                    </Text>
+
+                                    {/* Badges (tags) */}
+                                    <View style={styles.badgeContainer}>
+                                        {item.tags?.map((tag, index) => (
+                                            <Text key={index} style={styles.badge}>
+                                                {tag}
+                                            </Text>
+                                        ))}
+                                    </View>
+
+                                    <View>
+                                        <Text style={styles.estimatedHours}>Total Hours: {item?.estimatedHours}</Text>
+                                    </View>
+
+                                    {/* Priority Badge */}
+                                    <View style={styles.badgeContainer}>
+                                        <Text
+                                            style={[
+                                                styles.priorityBadge,
+                                                item.priority === "high"
+                                                    ? styles.priorityHigh
+                                                    : styles.priorityNormal,
+                                            ]}
+                                        >
+                                            {item.priority}
+                                        </Text>
+                                    </View>
+
                                 </View>
                             </View>
                         )}
@@ -216,6 +212,9 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         gap: 10,
     },
+    checkBoxContainer: {
+        marginTop: 6
+    },
     todoContent: {
         flex: 1,
         flexDirection: 'column',
@@ -235,6 +234,10 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 10,
         marginTop: 5,
+    },
+    estimatedHours: {
+        fontSize: 12,
+        color: '#1f4187ff',
     },
     badge: {
         backgroundColor: '#f3f4f6',
@@ -261,3 +264,29 @@ const styles = StyleSheet.create({
         color: '#6b7280',
     },
 })
+
+// searchTodos?.map((item, index) => (
+//     <View key={index} style={styles.todoCard}>
+//         {/* <CheckBox
+//             value={item?.completed}
+//             onValueChange={(value) => handleCheckbox(value, item)}
+//         /> */}
+//         <View style={styles.todoContent}>
+//             <Text style={styles.todoTitle}>{item?.title}</Text>
+//             <Text style={styles.todoDescription}>{item?.description}</Text>
+
+//             {/* <View style={styles.badgeContainer}>
+//                 <Text
+//                     style={[
+//                         styles.priorityBadge,
+//                         item?.priority === 'high' ? styles.priorityHigh : styles.priorityNormal
+//                     ]}
+//                 >
+//                     {item?.priority}
+//                 </Text>
+//                 <Text style={styles.badge}>Due: {item?.dueDate}</Text>
+//                 <Text style={styles.badge}>Estimated: {item?.estimatedHours}</Text>
+//             </View> */}
+//         </View>
+//     </View>
+// ))

@@ -44,10 +44,14 @@ const Signup = () => {
     // http://192.168.0.126:4000/auth/signup
 
     const handleSubmit = async () => {
+        if (!formData.username || !formData.email || !formData.password) {
+            dispatch(signInFailure("Please enter your details!"));
+            return
+        }
         try {
             if (formData.username.trim() && formData.email.trim() && formData.password.trim()) {
                 dispatch(signInStart());
-                const response = await axios.post("http://192.168.0.126:4000/auth/signup", formData);
+                const response = await axios.post("http://192.168.0.107:4000/auth/signup", formData);
                 if (response.status === 201 || response.status === 200) {
                     Toast.show({
                         type: "success",
@@ -63,11 +67,6 @@ const Signup = () => {
                 }
                 console.log(response, "response");
 
-            } else {
-                Toast.show({
-                    type: "error",
-                    text1: "Please fill out the form!"
-                })
             }
 
         } catch (error) {
@@ -77,6 +76,8 @@ const Signup = () => {
                 text2: error.message
             });
             dispatch(signInFailure("Something went wrong!"));
+        } finally {
+            dispatch(signInFailure());
         }
     }
 
@@ -114,6 +115,7 @@ const Signup = () => {
                             placeholder='Password'
                             secureTextEntry={true} />
                     </View>
+                    {errorMessage ? <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text> : ""}
                 </View>
                 {/* Buttons */}
                 <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
