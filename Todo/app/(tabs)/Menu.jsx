@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 
 const Menu = () => {
     const [active, setActive] = useState("All Tasks");
-    let todos = useSelector((state) => state.todoSlice.todo);
+    let todos = useSelector((state) => state.todoSlice.todos);
 
     return (
         <>

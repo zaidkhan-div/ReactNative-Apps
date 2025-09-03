@@ -73,32 +73,6 @@ const TabLayout = () => {
                 }}
             />
             <Tabs.Screen
-                name='Analytics'
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{
-                            alignItems: "center",
-                            paddingTop: 10,
-                            width: 100
-                        }}
-                        >
-                            <Ionicons
-                                name={focused ? "analytics" : "analytics-outline"}
-                                color={focused ? Theme.colors.primary : "analytics-outline"}
-                                size={24}
-                            />
-                            <Text style={{
-                                color: focused ? Theme.colors.primary : "gray",
-                                marginTop: 4,
-                                fontSize: 12
-                            }}>
-                                Analytics
-                            </Text>
-                        </View>
-                    )
-                }}
-            />
-            <Tabs.Screen
                 name='Dms'
                 options={{
                     tabBarIcon: ({ focused }) => (
@@ -124,6 +98,33 @@ const TabLayout = () => {
                     )
                 }}
             />
+            <Tabs.Screen
+                name='Analytics'
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{
+                            alignItems: "center",
+                            paddingTop: 10,
+                            width: 100
+                        }}
+                        >
+                            <Ionicons
+                                name={focused ? "analytics" : "analytics-outline"}
+                                color={focused ? Theme.colors.primary : "analytics-outline"}
+                                size={24}
+                            />
+                            <Text style={{
+                                color: focused ? Theme.colors.primary : "gray",
+                                marginTop: 4,
+                                fontSize: 12
+                            }}>
+                                Analytics
+                            </Text>
+                        </View>
+                    )
+                }}
+            />
+
 
         </Tabs>
     )
