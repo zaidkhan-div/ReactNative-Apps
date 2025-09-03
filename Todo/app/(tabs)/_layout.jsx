@@ -99,7 +99,7 @@ const TabLayout = () => {
                 }}
             />
             <Tabs.Screen
-                name='Signup'
+                name='Dms'
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{
@@ -109,7 +109,7 @@ const TabLayout = () => {
                         }}
                         >
                             <Ionicons
-                                name={focused ? "signup" : "sigin-outline"}
+                                name={focused ? "mail-unread-outline" : "mail-unread-outline"}
                                 color={focused ? Theme.colors.primary : "analytics-outline"}
                                 size={24}
                             />
@@ -118,38 +118,13 @@ const TabLayout = () => {
                                 marginTop: 4,
                                 fontSize: 12
                             }}>
-                                Signup
+                                Dms
                             </Text>
                         </View>
                     )
                 }}
             />
-            <Tabs.Screen
-                name='Login'
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{
-                            alignItems: "center",
-                            paddingTop: 10,
-                            width: 100
-                        }}
-                        >
-                            <Ionicons
-                                name={focused ? "Login" : "login-outline"}
-                                color={focused ? Theme.colors.primary : "Login-outline"}
-                                size={24}
-                            />
-                            <Text style={{
-                                color: focused ? Theme.colors.primary : "gray",
-                                marginTop: 4,
-                                fontSize: 12
-                            }}>
-                                Login
-                            </Text>
-                        </View>
-                    )
-                }}
-            />
+
         </Tabs>
     )
 }

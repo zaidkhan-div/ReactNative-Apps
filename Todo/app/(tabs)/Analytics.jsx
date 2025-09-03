@@ -48,8 +48,12 @@ import PerfectSize from "../../utils/PerfectSize"
 import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
 import ProgressBar from '../../Components/ProgressBar'
+import { useSelector } from 'react-redux'
 
 const Analytics = () => {
+    let { todos } = useSelector((state) => state.todoSlice);
+    console.log(todos, "todos");
+
     return (
         <>
             {/* Header */}
@@ -69,7 +73,7 @@ const Analytics = () => {
             <View style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={styles.container}>
                     <View style={styles.card}>
-                        <Text style={styles.cardNumber}>12</Text>
+                        <Text style={styles.cardNumber}>{todos.length}</Text>
                         <Text style={styles.cardLabel}>Total Tasks</Text>
                         <View style={styles.cardInnerBox}>
                             <Text style={styles.cardInnerText}>Weekly Progress</Text>

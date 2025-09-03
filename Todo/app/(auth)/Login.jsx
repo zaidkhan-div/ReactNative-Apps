@@ -17,7 +17,7 @@ const Login = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: ""
-    })
+    });
     const dispatch = useDispatch();
     const { loading, error: errorMessage } = useSelector((state) => state.user);
     const router = useRouter();
@@ -45,9 +45,9 @@ const Login = () => {
                 }
                 const { accessToken, refreshToken } = result.data;
                 AsyncStorage.setItem("accessToken", accessToken);
-                console.log(accessToken, "AccessToken");
+                dispatch(signInSucces());
 
-                await dispatch(loginSucces({ accessToken, refreshToken }));
+                await dispatch(loginSucces({ accessToken }));
                 setFormData({
                     email: "",
                     password: ""

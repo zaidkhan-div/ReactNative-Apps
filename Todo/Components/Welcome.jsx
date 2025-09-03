@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch, Image, Touchable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
 import PerfectSize from "../utils/PerfectSize";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetTodosQuery } from "../features/ApiCalling"
 import { setTodo } from '@/features/TodoSlice';
 import Checkbox from 'expo-checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Welcome = () => {
@@ -17,8 +18,7 @@ const Welcome = () => {
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false);
     const { data: todosData, isLoading, isSuccess } = useGetTodosQuery();
-    let todos = useSelector((state) => state.todoSlice.todo);
-
+    let todos = useSelector((state) => state.todoSlice.todos);
 
     useEffect(() => {
         if (isSuccess) {
@@ -35,8 +35,11 @@ const Welcome = () => {
         }
     }).reverse();
 
-    const handleComplete = () => {
-
+    const handleComplete = (newValue, item) => {
+        setChecked((prev) => ({
+            ...prev,
+            [item.id]: newValue,
+        }));
     }
 
     return (
@@ -56,17 +59,15 @@ const Welcome = () => {
                 </View> */}
 
                 <View style={styles.inputContainer}>
-                    {/* <View style={styles.inputWrapper}> */}
                     <TextInput
                         style={[styles.input]}
                         placeholder='Search Todo...'
                         value={inputVal}
                         onChangeText={(text) => setInputVal(text)}
                     />
-                    {/* </View>  */}
-                    {/* <TouchableOpacity style={styles.btnWrapper}>
-                        <Text style={styles.btn}>Add Todo</Text>
-                    </TouchableOpacity> */}
+                    <TouchableOpacity style={styles.btnWrapper}>
+                        <Image style={styles.userImg} source={require("../assets/images/testimonial3.jpg")} />
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -87,8 +88,8 @@ const Welcome = () => {
                                     {item.completed ? "Completed" : "Pending"}
                                 </Text> */}
 
-                                <TouchableOpacity style={styles.checkBoxContainer} onPress={handleComplete}>
-                                    <Checkbox value={item?.completed} onValueChange={setChecked} />
+                                <TouchableOpacity style={styles.checkBoxContainer}>
+                                    <Checkbox value={isChecked[item.id]} onValueChange={(newValue) => handleComplete(newValue, item)} />
                                 </TouchableOpacity>
 
                                 {/* Content */}
@@ -118,7 +119,12 @@ const Welcome = () => {
                                                 styles.priorityBadge,
                                                 item.priority === "high"
                                                     ? styles.priorityHigh
-                                                    : styles.priorityNormal,
+                                                    : item.priority === "medium"
+                                                        ? styles.priorityMedium
+                                                        : item.priority === "normal"
+                                                            ? styles.priorityNormal
+                                                            : null
+
                                             ]}
                                         >
                                             {item.priority}
@@ -131,7 +137,7 @@ const Welcome = () => {
                     />
                 )}
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 export default Welcome;
@@ -168,18 +174,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "black",
         borderRadius: PerfectSize(20),
-        paddingVertical: 10,
+        paddingVertical: 8,
         paddingHorizontal: 10,
         outline: "none"
     },
-    btnWrapper: {},
-    btn: {
-        backgroundColor: Theme.colors.primary,
-        color: "white",
-        fontSize: 18,
-        padding: 10,
-        borderRadius: PerfectSize(20),
-        cursor: "pointer"
+    btnWrapper: {
+        width: 55,
+        height: 55,
+    },
+    userImg: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 100
     },
     // This is for the TodosContainer
     container: {
@@ -258,6 +264,10 @@ const styles = StyleSheet.create({
     priorityHigh: {
         backgroundColor: '#fee2e2',
         color: '#ef4444',
+    },
+    priorityMedium: {
+        color: "#00000093",
+        backgroundColor: "#cebb1588"
     },
     priorityNormal: {
         backgroundColor: '#f3f4f6',

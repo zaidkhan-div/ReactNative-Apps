@@ -16,18 +16,18 @@ const userSlice = createSlice({
             state.loading = true
             state.error = null
         },
-        signInSucces: (state) => {
+        signInSucces: (state, action) => {
             state.loading = false;
-            state.error = null
+            state.error = null;
+            state.currentUser = action.payload;
         },
-        signInFailure: (state, actions) => {
+        signInFailure: (state, action) => {
             state.loading = false;
-            state.error = actions.payload;
+            state.error = action.payload;
         },
-        loginSucces: (state, actions) => {
+        loginSucces: (state, action) => {
             state.loading = false;
-            state.accessToken = actions.payload.accessToken;
-            state.refreshToken = actions.payload.refreshToken;
+            state.accessToken = action.payload.accessToken;
         }
     }
 });

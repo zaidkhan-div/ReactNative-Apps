@@ -1,28 +1,24 @@
-import { RootState } from "@reduxjs/toolkit/query";
+import Theme from "@/utils/theme";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { Provider, useSelector } from 'react-redux';
-import { store } from "./store";
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
-import Theme from "@/utils/theme";
+import { store } from "../store";
 
 const AppContent = () => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // const { accessToken } = useSelector((state) => state.user);
-  // const isloggedIn = !!accessToken;
+  const { currentUser, accessToken } = useSelector((state) => state.user);
 
-  // const accessToken = AsyncStorage.getItem("accessToken").then((res) => setToken(res))
   useEffect(() => {
     const loadToken = async () => {
       const accessToken = await AsyncStorage.getItem("accessToken");
       setToken(accessToken);
       setLoading(false);
-      console.log(accessToken, "response");
     }
     loadToken();
   }, [])

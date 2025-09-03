@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
 import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import axios from 'axios'
 import Toast from 'react-native-toast-message'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,7 +18,7 @@ const Signup = () => {
         email: "",
         password: ""
     });
-
+    const router = useRouter();
     const { loading, error: errorMessage } = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
@@ -63,9 +63,10 @@ const Signup = () => {
                         email: "",
                         password: ""
                     });
-                    dispatch(signInSucces())
+                    dispatch(signInSucces());
                 }
                 console.log(response, "response");
+                router.push("/Login");
 
             }
 
