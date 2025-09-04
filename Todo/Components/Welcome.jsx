@@ -4,13 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
-import { Link } from 'expo-router';
-import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetTodosQuery } from "../features/ApiCalling"
 import { setTodo } from '@/features/TodoSlice';
 import Checkbox from 'expo-checkbox';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Welcome = () => {
@@ -43,7 +40,7 @@ const Welcome = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <View>
                 {/* <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.menuWrapper}>
@@ -73,12 +70,12 @@ const Welcome = () => {
 
             <View style={styles.container}>
                 {isLoading ? (
-                    // <Text style={styles.loading}>Loading...</Text>
                     <View style={styles.loader}>
                         <ActivityIndicator size="large" color={Theme.colors.primary} />
                     </View>
                 ) : (
                     <FlatList
+                        contentContainerStyle={{ paddingHorizontal: 16 }}
                         data={searchTodos}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => (
@@ -137,7 +134,7 @@ const Welcome = () => {
                     />
                 )}
             </View>
-        </SafeAreaView >
+        </View >
     )
 }
 export default Welcome;
@@ -157,12 +154,12 @@ const styles = StyleSheet.create({
         cursor: "pointer"
     },
     inputContainer: {
-        marginTop: 13,
         display: "flex",
         flexDirection: "row",
         width: "100%",
         gap: 10,
-        paddingHorizontal: 5,
+        paddingHorizontal: 16,
+        marginTop: 10
     },
     inputWrapper: {
         flex: 1
@@ -191,15 +188,9 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         flex: 1,
-        paddingHorizontal: 8
-    },
-    loading: {
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: 30,
     },
     loader: {
-        display: "flex",
+        flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { Provider, useSelector } from 'react-redux';
 import { store } from "../store";
@@ -29,9 +29,11 @@ const AppContent = () => {
 
   return (
     <SafeAreaProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        {token ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
-      </Stack>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          {token ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
+        </Stack>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }

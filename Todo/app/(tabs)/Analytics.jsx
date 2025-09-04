@@ -110,10 +110,9 @@ export default Analytics
 const styles = StyleSheet.create({
     iconContainer: {
         backgroundColor: Theme.colors.primary,
-        height: PerfectSize(80),
+        height: 55,
         flexDirection: "row",
         alignItems: "center",
-        paddingTop: 15,
         paddingLeft: 10,
         gap: 5
     },

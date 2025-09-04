@@ -1,27 +1,64 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, FlatList, ScrollView, TouchableOpacity } from 'react-native'
 import { TextInput } from 'react-native';
 import SearchIcon from "react-native-vector-icons/EvilIcons"
+import Theme from "../../utils/theme"
+import { Link, useRouter } from 'expo-router';
 
 const Dms = () => {
+    const router = useRouter();
+
+    const usersData = [
+        {
+            name: "Zaidkhan",
+            lastMsg: "Last Message"
+        },
+        {
+            name: "MusabKhan",
+            lastMsg: "Last Message"
+        },
+        {
+            name: "Touseef",
+            lastMsg: "Last Message"
+        }
+    ]
+
+    const openChat = (name) => {
+        router.push({
+            pathname: "/ChatScreen",
+            params: { userId: '123', name: name },
+        })
+    }
+
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <View style={styles.safeArea}>
+            <View style={styles.topBar}>
+                <Link href="/ChatScreen"><Text style={styles.topTitle}>Find People</Text></Link>
+            </View>
             <View style={styles.searchWrapper}>
                 <TextInput style={styles.input} placeholder='Search..' />
                 <SearchIcon style={styles.searchIcon} name='search' size={30} />
             </View>
             <ScrollView style={styles.scrollContainer}>
-                <View style={styles.itemContainer}>
-                    <View style={styles.imageWrapper}>
-                        <Image style={styles.itemImage} source={require("../../assets/images/person.png")} />
-                    </View>
-                    <View style={styles.infoWrapper}>
-                        <Text style={styles.userName}>Zaidkhan</Text>
-                        <Text style={styles.lastMessage}>LastMessage</Text>
-                    </View>
-                </View>
+
+                {
+                    usersData.map((item, index) => (
+                        <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => openChat(item.name)}>
+                            <View style={styles.imageWrapper}>
+                                <Image style={styles.itemImage} source={require("../../assets/images/testimonial3.jpg")} />
+                            </View>
+                            <View style={styles.infoWrapper}>
+                                <Text style={styles.userName}>{item?.name}</Text>
+                                <Text style={styles.lastMessage}>{item?.lastMsg}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))
+
+                }
+
+
             </ScrollView>
-        </SafeAreaView>
+        </View >
     )
 }
 export default Dms;
@@ -31,16 +68,24 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 5
     },
+    topBar: {
+        marginTop: 10,
+    },
+    topTitle: {
+        fontSize: 24,
+        fontWeight: "600",
+        color: "black"
+    },
     searchWrapper: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 50,
         paddingHorizontal: 8,
         gap: 5,
         borderWidth: 1,
         borderColor: "#00000070",
         borderRadius: 20,
+        marginTop: 10
     },
     input: {
         flex: 1,
@@ -52,18 +97,18 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         marginTop: 20,
-        flex: 1
+        flex: 1,
     },
     itemContainer: {
-        height: 75,
-        backgroundColor: "#00000050",
+        height: 70,
+        backgroundColor: "#d1c4c412",
         borderBottomWidth: 1,
-        borderBottomColor: "#00000090",
-        justifyContent: "center",
-        alignItems: "",
+        borderBottomColor: "#00000070",
+        justifyContent: "start",
+        alignItems: "center",
         paddingHorizontal: 10,
         flexDirection: "row",
-        gap: 10
+        gap: 10,
     },
     imageWrapper: {
         height: 50,
@@ -71,7 +116,8 @@ const styles = StyleSheet.create({
     },
     itemImage: {
         height: "100%",
-        width: "100%"
+        width: "100%",
+        borderRadius: 100
     },
     infoWrapper: {},
     userName: {

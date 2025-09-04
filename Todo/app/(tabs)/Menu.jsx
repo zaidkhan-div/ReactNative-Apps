@@ -1,6 +1,6 @@
 import { Link } from 'expo-router'
 import { useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from "react-native-vector-icons/Feather"
 import PerfectSize from "../../utils/PerfectSize"
 import Theme from "../../utils/theme"
@@ -9,13 +9,15 @@ import { useSelector } from 'react-redux'
 const Menu = () => {
     const [active, setActive] = useState("All Tasks");
     let todos = useSelector((state) => state.todoSlice.todos);
+    const importTodos = todos.filter((item) => item?.priority === "high");
+
 
     return (
         <>
-            <View style={styles.iconContainer}>
+            <SafeAreaView style={styles.iconContainer}>
                 <Link href='/'><Icon name='arrow-left' size={25} color="white" /></Link>
                 <Link href='/'><Text style={styles.iconText}>Back</Text></Link>
-            </View>
+            </SafeAreaView>
 
             <ScrollView style={styles.navigationContainer}>
                 <Text style={styles.navText}>navigation</Text>
@@ -49,7 +51,7 @@ const Menu = () => {
                         </View>
                         <Text style={active === "Important" && { color: "white" }}>Important</Text>
                     </View>
-                    <Text style={styles.listNumber}>8</Text>
+                    <Text style={styles.listNumber}>{importTodos.length}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -81,7 +83,7 @@ const Menu = () => {
                         </View>
                         <Text style={active === "Analytics" && { color: "white" }}>Analytics</Text>
                     </View>
-                    <Text style={styles.listNumber}>12</Text>
+                    {/* <Text style={styles.listNumber}>12</Text> */}
                 </TouchableOpacity>
 
             </ScrollView >
@@ -94,12 +96,11 @@ export default Menu;
 const styles = StyleSheet.create({
     iconContainer: {
         backgroundColor: Theme.colors.primary,
-        height: PerfectSize(80),
+        height: 55,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        paddingTop: 15,
         paddingLeft: 10,
         gap: 5
     },
@@ -152,4 +153,4 @@ const styles = StyleSheet.create({
         fontSize: PerfectSize(18),
         color: "white",
     }
-})
+});

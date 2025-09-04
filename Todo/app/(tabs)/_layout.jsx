@@ -13,7 +13,7 @@ const TabLayout = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: "absolute",
-                    height: 62,
+                    height: 55,
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center"
