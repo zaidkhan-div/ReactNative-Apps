@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch, Image, Touchable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/Entypo";
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
@@ -16,10 +15,9 @@ const Welcome = () => {
     const [isChecked, setChecked] = useState(false);
     const { data, isLoading, isSuccess } = useGetTodosQuery();
     let todos = useSelector((state) => state.todoSlice.todos);
-    console.log({ data });
 
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && !isLoading) {
             dispatch(setTodo(data?.data?.allTask))
         }
     }, [data]);
@@ -34,6 +32,7 @@ const Welcome = () => {
     }).reverse();
 
 
+
     const handleComplete = (newValue, item) => {
         setChecked((prev) => ({
             ...prev,
@@ -44,19 +43,6 @@ const Welcome = () => {
     return (
         <View style={{ flex: 1 }}>
             <View>
-                {/* <View style={styles.iconsContainer}>
-                    <TouchableOpacity style={styles.menuWrapper}>
-                        <Link href="/Menu">
-                            <Icon name="menu" size={30} color={Theme.colors.primary} />
-                        </Link>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.analyticWrapper}>
-                        <Link href="/Analytics">
-                            <NewIcon name="analytics-sharp" size={30} color={Theme.colors.primary} />
-                        </Link>
-                    </TouchableOpacity>
-                </View> */}
-
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={[styles.input]}
@@ -78,7 +64,7 @@ const Welcome = () => {
                 ) : (
                     <FlatList
                         contentContainerStyle={{ paddingHorizontal: 16 }}
-                        data={data}
+                        data={searchTodos}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => (
                             <View style={styles.todoCard}>
@@ -236,7 +222,7 @@ const styles = StyleSheet.create({
     },
     estimatedHours: {
         fontSize: 12,
-        color: '#1f4187ff',
+        color: '#134ab9ff',
     },
     badge: {
         backgroundColor: '#f3f4f6',
@@ -266,30 +252,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#f3f4f6',
         color: '#6b7280',
     },
-})
-
-// searchTodos?.map((item, index) => (
-//     <View key={index} style={styles.todoCard}>
-//         {/* <CheckBox
-//             value={item?.completed}
-//             onValueChange={(value) => handleCheckbox(value, item)}
-//         /> */}
-//         <View style={styles.todoContent}>
-//             <Text style={styles.todoTitle}>{item?.title}</Text>
-//             <Text style={styles.todoDescription}>{item?.description}</Text>
-
-//             {/* <View style={styles.badgeContainer}>
-//                 <Text
-//                     style={[
-//                         styles.priorityBadge,
-//                         item?.priority === 'high' ? styles.priorityHigh : styles.priorityNormal
-//                     ]}
-//                 >
-//                     {item?.priority}
-//                 </Text>
-//                 <Text style={styles.badge}>Due: {item?.dueDate}</Text>
-//                 <Text style={styles.badge}>Estimated: {item?.estimatedHours}</Text>
-//             </View> */}
-//         </View>
-//     </View>
-// ))
+});

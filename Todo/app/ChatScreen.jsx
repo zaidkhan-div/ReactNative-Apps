@@ -1,6 +1,16 @@
-import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import {
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableWithoutFeedback,
+    Keyboard,
+} from "react-native";
 import { useState } from "react";
-import BackIcon from "react-native-vector-icons/Ionicons"
+import BackIcon from "react-native-vector-icons/Ionicons";
 import Theme from "../utils/theme";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -10,58 +20,76 @@ const ChatScreen = () => {
     const [text, setText] = useState("");
 
     const sendMessage = () => {
-        console.log(text)
-    }
+        console.log(text);
+        setText("");
+    };
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+            >
+                <View style={styles.topBar}>
+                    <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                        <BackIcon name="chevron-back" size={30} color={Theme.colors.primary} />
+                    </TouchableOpacity>
+                    <Text style={styles.userName}>{name}</Text>
+                </View>
 
-        <KeyboardAvoidingView style={styles.safeAre} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <TouchableOpacity onPress={() => router.back()} style={styles.topBar}>
-                <BackIcon name="chevron-back" size={30} color={Theme.colors.primary} />
-                <Text style={styles.userName}>{name}</Text>
-            </TouchableOpacity>
-            {/* Messages */}
+                {/* Messages or placeholder */}
+                <View style={styles.messagesContainer}>
+                    {/* Replace with FlatList for actual messages */}
+                </View>
 
-            {/* InputButton */}
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type a message..."
-                    value={text}
-                    onChangeText={setText}
-                />
-                <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                    <Text style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>Send</Text>
-                </TouchableOpacity>
-            </View>
-        </KeyboardAvoidingView>
+                {/* Input Field */}
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Type a message..."
+                        value={text}
+                        onChangeText={setText}
+                    />
+                    <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                        <Text style={styles.sendText}>Send</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
-}
+};
+
 export default ChatScreen;
 
 const styles = StyleSheet.create({
-    safeAre: {
+    container: {
         flex: 1,
-        justifyContent: "space-between",
-        paddingBottom: 10
     },
     topBar: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: 10
+        padding: 10,
+    },
+    backButton: {
+        marginRight: 8,
     },
     userName: {
         fontSize: 18,
         fontWeight: "600",
     },
-
-    // inputContainer
+    messagesContainer: {
+        flex: 1,
+        padding: 10,
+    },
     inputContainer: {
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 16,
-        paddingVertical: 5,
-        gap: 10
+        paddingVertical: 8,
+        borderTopWidth: 1,
+        borderColor: "#eee",
+        backgroundColor: "#fff",
     },
     input: {
         flex: 1,
@@ -77,7 +105,11 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 15,
         borderRadius: 20,
-        width: 80,
+        marginLeft: 8,
     },
-
-})
+    sendText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+});
