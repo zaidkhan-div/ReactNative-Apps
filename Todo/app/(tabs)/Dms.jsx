@@ -26,7 +26,7 @@ const Dms = () => {
     const openChat = (name) => {
         router.push({
             pathname: "/ChatScreen",
-            params: { userId: '123', name: name },
+            params: { name: name },
         })
     }
 

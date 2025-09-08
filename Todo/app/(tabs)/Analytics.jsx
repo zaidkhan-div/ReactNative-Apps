@@ -49,10 +49,10 @@ import Icon from "react-native-vector-icons/Feather"
 import { Link } from 'expo-router'
 import ProgressBar from '../../Components/ProgressBar'
 import { useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Analytics = () => {
     let { todos } = useSelector((state) => state.todoSlice);
-    console.log(todos, "todos");
 
     return (
         <>

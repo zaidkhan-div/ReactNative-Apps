@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ApiCalling = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://192.168.0.107:4000/tasks/",
+        baseUrl: "http://192.168.0.113:4000/tasks/",
         prepareHeaders: async (headers) => {
             const token = await AsyncStorage.getItem("accessToken");
             if (token) {
