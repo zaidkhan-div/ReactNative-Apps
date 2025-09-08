@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
@@ -51,7 +51,7 @@ const Signup = () => {
         try {
             if (formData.username.trim() && formData.email.trim() && formData.password.trim()) {
                 dispatch(signInStart());
-                const response = await axios.post("http://192.168.0.107:4000/auth/signup", formData);
+                const response = await axios.post("http://192.168.0.113:4000/auth/signup", formData);
                 if (response.status === 201 || response.status === 200) {
                     Toast.show({
                         type: "success",
@@ -83,7 +83,7 @@ const Signup = () => {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView style={styles.safeArea} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <View style={styles.container}>
                 <View style={styles.textWrapper}>
                     <Text style={styles.title}>Sign up</Text>
@@ -137,7 +137,7 @@ const Signup = () => {
                     </Link>
                 </View>
             </View>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 export default Signup

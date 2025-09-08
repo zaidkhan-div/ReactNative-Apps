@@ -1,6 +1,5 @@
 import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import BackIcon from "react-native-vector-icons/Ionicons"
 import Theme from "../utils/theme";
 import { useLocalSearchParams, useRouter } from "expo-router";

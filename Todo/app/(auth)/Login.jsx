@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Theme from '../../utils/theme'
@@ -30,7 +30,7 @@ const Login = () => {
         try {
             dispatch(signInStart())
             if (formData.email.trim() && formData.password.trim()) {
-                const response = await fetch("http://192.168.0.107:4000/auth/login", {
+                const response = await fetch("http://192.168.0.113:4000/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -52,7 +52,7 @@ const Login = () => {
                     email: "",
                     password: ""
                 });
-                router.push("/");
+                router.replace("/");
 
             }
         } catch (error) {
@@ -67,7 +67,7 @@ const Login = () => {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView style={styles.safeArea} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <View style={styles.container}>
                 <View style={styles.textWrapper}>
                     <Text style={styles.title}>Login</Text>
@@ -116,7 +116,7 @@ const Login = () => {
                     </Link>
                 </View>
             </View>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 export default Login

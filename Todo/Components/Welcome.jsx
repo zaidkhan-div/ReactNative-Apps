@@ -14,14 +14,15 @@ const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false);
-    const { data: todosData, isLoading, isSuccess } = useGetTodosQuery();
+    const { data, isLoading, isSuccess } = useGetTodosQuery();
     let todos = useSelector((state) => state.todoSlice.todos);
+    console.log({ data });
 
     useEffect(() => {
         if (isSuccess) {
-            dispatch(setTodo(todosData?.data?.allTask))
+            dispatch(setTodo(data?.data?.allTask))
         }
-    }, [todosData]);
+    }, [data]);
 
     const searchTodos = todos.filter((item) => {
         if (inputVal.trim()) {
@@ -31,6 +32,7 @@ const Welcome = () => {
             return item;
         }
     }).reverse();
+
 
     const handleComplete = (newValue, item) => {
         setChecked((prev) => ({
@@ -76,7 +78,7 @@ const Welcome = () => {
                 ) : (
                     <FlatList
                         contentContainerStyle={{ paddingHorizontal: 16 }}
-                        data={searchTodos}
+                        data={data}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => (
                             <View style={styles.todoCard}>
