@@ -16,7 +16,7 @@ const ApiCalling = createApi({
     tagTypes: ["todo"],
     endpoints: (builder) => ({
         getTodos: builder.query({
-            query: () => "getAllTasks",
+            query: () => "find-all-tasks",
             providesTags: ["todo"],
         }),
         addTodo: builder.mutation({

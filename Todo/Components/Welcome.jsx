@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch, Image, Touchable } from 'react-native';
-import Icon from "react-native-vector-icons/Entypo";
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetTodosQuery } from "../features/ApiCalling"
 import { setTodo } from '@/features/TodoSlice';
 import Checkbox from 'expo-checkbox';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
@@ -16,9 +15,10 @@ const Welcome = () => {
     const { data, isLoading, isSuccess } = useGetTodosQuery();
     let todos = useSelector((state) => state.todoSlice.todos);
 
+
     useEffect(() => {
         if (isSuccess && !isLoading) {
-            dispatch(setTodo(data?.data?.allTask))
+            dispatch(setTodo(data?.data?.tasks))
         }
     }, [data]);
 
@@ -30,7 +30,6 @@ const Welcome = () => {
             return item;
         }
     }).reverse();
-
 
 
     const handleComplete = (newValue, item) => {
@@ -74,7 +73,7 @@ const Welcome = () => {
                                 </Text> */}
 
                                 <TouchableOpacity style={styles.checkBoxContainer}>
-                                    <Checkbox value={isChecked[item.id]} onValueChange={(newValue) => handleComplete(newValue, item)} />
+                                    <Checkbox value={item?.status === "completed"} onValueChange={(newValue) => handleComplete(newValue, item)} />
                                 </TouchableOpacity>
 
                                 {/* Content */}
@@ -172,10 +171,10 @@ const styles = StyleSheet.create({
         height: "100%",
         borderRadius: 100
     },
-    // This is for the TodosContainer
     container: {
         marginTop: 10,
         flex: 1,
+        marginBottom: 50
     },
     loader: {
         flex: 1,

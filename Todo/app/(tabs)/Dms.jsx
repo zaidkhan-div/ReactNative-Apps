@@ -55,8 +55,6 @@ const Dms = () => {
                     ))
 
                 }
-
-
             </ScrollView>
         </View >
     )

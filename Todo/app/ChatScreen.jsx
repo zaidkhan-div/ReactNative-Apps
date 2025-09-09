@@ -29,8 +29,7 @@ const ChatScreen = () => {
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
-            >
+                keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}>
                 <View style={styles.topBar}>
                     <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                         <BackIcon name="chevron-back" size={30} color={Theme.colors.primary} />
@@ -38,9 +37,7 @@ const ChatScreen = () => {
                     <Text style={styles.userName}>{name}</Text>
                 </View>
 
-                {/* Messages or placeholder */}
                 <View style={styles.messagesContainer}>
-                    {/* Replace with FlatList for actual messages */}
                 </View>
 
                 {/* Input Field */}

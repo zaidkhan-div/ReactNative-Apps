@@ -6,6 +6,7 @@ import {
     View,
     Modal as RNModal,
     Platform,
+    ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import Theme from "../utils/theme";
@@ -106,125 +107,127 @@ const Modal = () => {
             <RNModal visible={openModal} animationType="fade" transparent>
                 <View style={styles.overlay}>
                     <View style={styles.card}>
-                        <Text style={styles.title}>Add Todo</Text>
+                        <ScrollView>
+                            <Text style={styles.title}>Add Todo</Text>
 
-                        {/* Title */}
-                        <Text style={styles.label}>Title *</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="e.g., Design system implementation"
-                            value={title}
-                            onChangeText={setTitle}
-                        />
+                            {/* Title */}
+                            <Text style={styles.label}>Title *</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="e.g., Design system implementation"
+                                value={title}
+                                onChangeText={setTitle}
+                            />
 
-                        {/* Description */}
-                        <Text style={styles.label}>Description</Text>
-                        <TextInput
-                            style={[styles.input, styles.textarea]}
-                            placeholder="Add a short description"
-                            value={description}
-                            onChangeText={setDescription}
-                            multiline
-                        />
+                            {/* Description */}
+                            <Text style={styles.label}>Description</Text>
+                            <TextInput
+                                style={[styles.input, styles.textarea]}
+                                placeholder="Add a short description"
+                                value={description}
+                                onChangeText={setDescription}
+                                multiline
+                            />
 
-                        {/* Priority & Category */}
-                        <View style={styles.row}>
-                            <View style={styles.col}>
-                                <Text style={styles.label}>Priority</Text>
-                                <View style={styles.pickerWrap}>
-                                    <Picker
-                                        selectedValue={priority}
-                                        onValueChange={setPriority}
-                                        dropdownIconColor="#6b7280"
-                                    >
-                                        <Picker.Item label="Normal" value="normal" />
-                                        <Picker.Item label="High" value="high" />
-                                        <Picker.Item label="Medium" value="medium" />
-                                    </Picker>
+                            {/* Priority & Category */}
+                            <View style={styles.row}>
+                                <View style={styles.col}>
+                                    <Text style={styles.label}>Priority</Text>
+                                    <View style={styles.pickerWrap}>
+                                        <Picker
+                                            selectedValue={priority}
+                                            onValueChange={setPriority}
+                                            dropdownIconColor="#6b7280"
+                                        >
+                                            <Picker.Item label="Normal" value="normal" />
+                                            <Picker.Item label="High" value="high" />
+                                            <Picker.Item label="Medium" value="medium" />
+                                        </Picker>
+                                    </View>
+                                </View>
+
+                                <View style={styles.col}>
+                                    <Text style={styles.label}>Category</Text>
+                                    <View style={styles.pickerWrap}>
+                                        <Picker
+                                            selectedValue={category}
+                                            onValueChange={setCategory}
+                                            dropdownIconColor="#6b7280"
+                                        >
+                                            <Picker.Item label="General" value="general" />
+                                            <Picker.Item label="Development" value="development" />
+                                            <Picker.Item label="Personal" value="personal" />
+                                            <Picker.Item label="Work" value="work" />
+                                        </Picker>
+                                    </View>
                                 </View>
                             </View>
 
-                            <View style={styles.col}>
-                                <Text style={styles.label}>Category</Text>
-                                <View style={styles.pickerWrap}>
-                                    <Picker
-                                        selectedValue={category}
-                                        onValueChange={setCategory}
-                                        dropdownIconColor="#6b7280"
+                            {/* Tags */}
+                            <Text style={styles.label}>Tags (comma separated)</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="react, ui, design"
+                                value={tagsInput}
+                                onChangeText={setTagsInput}
+                                autoCapitalize="none"
+                            />
+
+                            {/* Due Date & Hours */}
+                            <View style={styles.row}>
+                                <View style={[styles.col, { flex: 1.2 }]}>
+                                    <Text style={styles.label}>Due Date</Text>
+                                    <TouchableOpacity
+                                        style={styles.inputButton}
+                                        onPress={() => setShowPicker(true)}
                                     >
-                                        <Picker.Item label="General" value="general" />
-                                        <Picker.Item label="Development" value="development" />
-                                        <Picker.Item label="Personal" value="personal" />
-                                        <Picker.Item label="Work" value="work" />
-                                    </Picker>
+                                        <Text style={styles.inputButtonText}>
+                                            {dueDate ? dueDate.toDateString() : "Pick a date"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.col}>
+                                    <Text style={styles.label}>Est. Hours</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="e.g., 8"
+                                        keyboardType="numeric"
+                                        value={estimatedHours}
+                                        onChangeText={setEstimatedHours}
+                                    />
                                 </View>
                             </View>
-                        </View>
 
-                        {/* Tags */}
-                        <Text style={styles.label}>Tags (comma separated)</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="react, ui, design"
-                            value={tagsInput}
-                            onChangeText={setTagsInput}
-                            autoCapitalize="none"
-                        />
+                            {showPicker && (
+                                <DateTimePicker
+                                    value={dueDate || new Date()}
+                                    mode="date"
+                                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                                    onChange={(_, date) => {
+                                        setShowPicker(false);
+                                        if (date) setDueDate(date);
+                                    }}
+                                />
+                            )}
 
-                        {/* Due Date & Hours */}
-                        <View style={styles.row}>
-                            <View style={[styles.col, { flex: 1.2 }]}>
-                                <Text style={styles.label}>Due Date</Text>
+                            {/* Actions */}
+                            <View style={styles.actions}>
                                 <TouchableOpacity
-                                    style={styles.inputButton}
-                                    onPress={() => setShowPicker(true)}
+                                    style={[styles.button, styles.cancel]}
+                                    onPress={() => setOpenModal(false)}
                                 >
-                                    <Text style={styles.inputButtonText}>
-                                        {dueDate ? dueDate.toDateString() : "Pick a date"}
-                                    </Text>
+                                    <Text style={styles.buttonText}>Cancel</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[styles.button, styles.add]}
+                                    onPress={handleSubmit}
+                                >
+                                    <Text style={styles.buttonText}>Add</Text>
                                 </TouchableOpacity>
                             </View>
-
-                            <View style={styles.col}>
-                                <Text style={styles.label}>Est. Hours</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="e.g., 8"
-                                    keyboardType="numeric"
-                                    value={estimatedHours}
-                                    onChangeText={setEstimatedHours}
-                                />
-                            </View>
-                        </View>
-
-                        {showPicker && (
-                            <DateTimePicker
-                                value={dueDate || new Date()}
-                                mode="date"
-                                display={Platform.OS === "ios" ? "spinner" : "default"}
-                                onChange={(_, date) => {
-                                    setShowPicker(false);
-                                    if (date) setDueDate(date);
-                                }}
-                            />
-                        )}
-
-                        {/* Actions */}
-                        <View style={styles.actions}>
-                            <TouchableOpacity
-                                style={[styles.button, styles.cancel]}
-                                onPress={() => setOpenModal(false)}
-                            >
-                                <Text style={styles.buttonText}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={[styles.button, styles.add]}
-                                onPress={handleSubmit}
-                            >
-                                <Text style={styles.buttonText}>Add</Text>
-                            </TouchableOpacity>
-                        </View>
+                        </ScrollView>
                     </View>
                 </View>
             </RNModal>
@@ -243,8 +246,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 100,
         position: "absolute",
-        bottom: 85,
-        right: 20,
+        bottom: 70,
+        right: 16,
     },
     overlay: {
         flex: 1,
@@ -252,6 +255,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 16,
+        height: "100%",
+        overflow: "hidden"
     },
     card: {
         width: "100%",
@@ -264,6 +269,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 12,
+        height: 450,
     },
     title: {
         fontSize: 20,

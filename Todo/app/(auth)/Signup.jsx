@@ -19,8 +19,8 @@ const Signup = () => {
         password: ""
     });
     const router = useRouter();
-    const { loading, error: errorMessage } = useSelector((state) => state.user)
-    const dispatch = useDispatch()
+    const { loading, error: errorMessage } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     // 2. The problem
     // When you type in Name, you want to update only name but keep email and password safe.
