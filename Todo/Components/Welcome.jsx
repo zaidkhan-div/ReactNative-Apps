@@ -3,21 +3,22 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Activi
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetTodosQuery } from "../features/ApiCalling"
+import { useGetTodosQuery, useCompleteTaskMutation } from "../features/ApiCalling"
 import { setTodo } from '@/features/TodoSlice';
 import Checkbox from 'expo-checkbox';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
     const dispatch = useDispatch();
-    const [isChecked, setChecked] = useState(false);
+    // const [isChecked, setChecked] = useState(false);
     const { data, isLoading, isSuccess } = useGetTodosQuery();
+    const [completeTask] = useCompleteTaskMutation(); // completeTask
     let todos = useSelector((state) => state.todoSlice.todos);
-
+    console.log({ data })
 
     useEffect(() => {
-        if (isSuccess && !isLoading) {
+        if (isSuccess) {
             dispatch(setTodo(data?.data?.tasks))
         }
     }, [data]);
@@ -32,11 +33,22 @@ const Welcome = () => {
     }).reverse();
 
 
-    const handleComplete = (newValue, item) => {
-        setChecked((prev) => ({
-            ...prev,
-            [item.id]: newValue,
-        }));
+    const handleComplete = async (isChecked, item) => {
+        try {
+            let obj = {
+                id: item?.id,
+                body: {
+                    status: isChecked ? "completed" : "pending",
+                }
+            }
+            await completeTask(obj);
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Opps!",
+                text2: error.message
+            })
+        }
     }
 
     return (
@@ -73,7 +85,7 @@ const Welcome = () => {
                                 </Text> */}
 
                                 <TouchableOpacity style={styles.checkBoxContainer}>
-                                    <Checkbox value={item?.status === "completed"} onValueChange={(newValue) => handleComplete(newValue, item)} />
+                                    <Checkbox value={item?.status === "completed"} onValueChange={(isChecked) => handleComplete(isChecked, item)} />
                                 </TouchableOpacity>
 
                                 {/* Content */}
