@@ -6,7 +6,7 @@ import { Label } from '@react-navigation/elements'
 import { TextInput } from 'react-native'
 import { Link } from 'expo-router'
 import Toast from 'react-native-toast-message'
-import { signInStart, signInSucces, signInFailure, loginSucces } from '../../features/userSlice'
+import { signInStart, signInSucces, signInFailure, loginSucces, setCurrentUser } from '../../features/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActivityIndicator } from 'react-native'
 import { useRouter } from 'expo-router'
@@ -30,7 +30,7 @@ const Login = () => {
         try {
             dispatch(signInStart())
             if (formData.email.trim() && formData.password.trim()) {
-                const response = await fetch("http://192.168.0.113:4000/auth/login", {
+                const response = await fetch("http://192.168.100.222:4000/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -43,17 +43,17 @@ const Login = () => {
                     dispatch(signInFailure(result.message || "Invalid credentials"));
                     return;
                 }
-                const { accessToken, refreshToken } = result.data;
-                AsyncStorage.setItem("accessToken", accessToken);
+                const { accessToken, refreshToken, user } = result.data;
+                // AsyncStorage.setItem("accessToken", accessToken);
+                // AsyncStorage.setItem("admin", JSON.stringify(user));
                 dispatch(signInSucces());
+                dispatch(setCurrentUser({ user, accessToken }))
 
-                await dispatch(loginSucces({ accessToken }));
                 setFormData({
                     email: "",
                     password: ""
                 });
                 router.replace("/");
-
             }
         } catch (error) {
             Toast.show({

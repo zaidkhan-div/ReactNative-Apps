@@ -16,6 +16,8 @@ import { useAddTodoMutation } from "@/features/ApiCalling";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
+import { useGetAllUsersQuery } from "@/features/ApiCalling";
 
 const Modal = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -27,8 +29,12 @@ const Modal = () => {
     const [dueDate, setDueDate] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
     const [estimatedHours, setEstimatedHours] = useState("");
+    const [assignedUser, setAssignedUser] = useState(null);
+
+    const currentUser = useSelector((state) => state.user.currentUser);
 
     const [addNewTodo, { isSuccess }] = useAddTodoMutation();
+    const { data } = useGetAllUsersQuery();
 
     const handleSubmit = async () => {
         if (!title || !description || !priority || !category || !tagsInput || !dueDate || !estimatedHours) {
@@ -51,7 +57,10 @@ const Modal = () => {
                     .filter(Boolean),
                 dueDate: dueDate ? dueDate.toISOString().slice(0, 10) : null,
                 estimatedHours: estimatedHours ? Number(estimatedHours) : null,
-                completed: false,
+                status: "pending",
+                ...(currentUser?.role === "admin" && assignedUser
+                    ? { assignedTo: assignedUser }
+                    : {}),
             };
 
             // const token = await AsyncStorage.getItem("accessToken");
@@ -209,6 +218,25 @@ const Modal = () => {
                                         if (date) setDueDate(date);
                                     }}
                                 />
+                            )}
+
+                            {currentUser?.role === "admin" && (
+                                <>
+                                    <Text style={styles.label}>Assign To</Text>
+                                    <View style={styles.pickerWrap}>
+                                        <Picker
+                                            selectedValue={assignedUser}
+                                            onValueChange={setAssignedUser}
+                                            dropdownIconColor="#6b7280"
+                                        >
+                                            <Picker.Item label="Select User" value="" />
+                                            {/* Map users list from API */}
+                                            {users?.map((u) => (
+                                                <Picker.Item key={u.id} label={u.username} value={u.id} />
+                                            ))}
+                                        </Picker>
+                                    </View>
+                                </>
                             )}
 
                             {/* Actions */}

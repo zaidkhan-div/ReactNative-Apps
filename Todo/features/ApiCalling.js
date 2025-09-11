@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ApiCalling = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://192.168.0.110:4000/tasks/",
-        prepareHeaders: async (headers) => {
-            const token = await AsyncStorage.getItem("accessToken");
+        baseUrl: "http://192.168.100.222:4000/tasks/",
+        prepareHeaders: async (headers, { getState }) => {
+            const token = getState().user?.accessToken;
             if (token) {
                 headers.set("Authorization", `Bearer ${token}`);
             }
@@ -34,9 +33,31 @@ const ApiCalling = createApi({
                 body
             }),
             invalidatesTags: ["todo"],
-        })
+        }),
     }),
 });
 
-export const { useGetTodosQuery, useAddTodoMutation, useCompleteTaskMutation } = ApiCalling;
+export const { useGetTodosQuery, useAddTodoMutation, useCompleteTaskMutation, useGe } = ApiCalling;
 export default ApiCalling;
+
+
+export const AllUser = createApi({
+    reducerPath: "users",
+    baseQuery: fetchBaseQuery({
+        baseUrl: "http://192.168.100.222:4000/users/",
+        prepareHeaders: async (headers, { getState }) => {
+            const token = getState().user.accessToken;
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
+            return headers;
+        },
+        endpoints: (builder) => ({
+            getAllUsers: builder.query({
+                query: () => "find-all"
+            })
+        })
+    })
+})
+
+export const { useGetAllUsersQuery } = AllUser;

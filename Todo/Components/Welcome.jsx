@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch, Image, Touchable } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, FlatList, Switch, Image, Touchable, Alert } from 'react-native';
 import PerfectSize from "../utils/PerfectSize";
 import Theme from '../utils/theme.js'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,12 +10,13 @@ import Toast from 'react-native-toast-message';
 
 const Welcome = () => {
     const [inputVal, setInputVal] = useState("");
+    const [userRole, setUserRole] = useState(null);
+
     const dispatch = useDispatch();
-    // const [isChecked, setChecked] = useState(false);
     const { data, isLoading, isSuccess } = useGetTodosQuery();
     const [completeTask] = useCompleteTaskMutation(); // completeTask
     let todos = useSelector((state) => state.todoSlice.todos);
-    console.log({ data })
+    let curentUser = useSelector((state) => state.user.curentUser);
 
     useEffect(() => {
         if (isSuccess) {
@@ -42,7 +43,8 @@ const Welcome = () => {
                 }
             }
             await completeTask(obj);
-        } catch (error) {
+        }
+        catch (error) {
             Toast.show({
                 type: "error",
                 text1: "Opps!",
@@ -51,23 +53,23 @@ const Welcome = () => {
         }
     }
 
+
     return (
         <View style={{ flex: 1 }}>
-            <View>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={[styles.input]}
-                        placeholder='Search Todo...'
-                        value={inputVal}
-                        onChangeText={(text) => setInputVal(text)}
-                    />
-                    <TouchableOpacity style={styles.btnWrapper}>
-                        <Image style={styles.userImg} source={require("../assets/images/testimonial3.jpg")} />
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={[styles.input]}
+                    placeholder='Search Todo...'
+                    value={inputVal}
+                    onChangeText={(text) => setInputVal(text)}
+                />
+                <TouchableOpacity style={styles.btnWrapper}>
+                    <Image style={styles.userImg} source={require("../assets/images/testimonial3.jpg")} />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
+
                 {isLoading ? (
                     <View style={styles.loader}>
                         <ActivityIndicator size="large" color={Theme.colors.primary} />
@@ -175,8 +177,8 @@ const styles = StyleSheet.create({
         outline: "none"
     },
     btnWrapper: {
-        width: 55,
-        height: 55,
+        width: 40,
+        height: 40,
     },
     userImg: {
         width: "100%",

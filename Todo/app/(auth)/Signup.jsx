@@ -51,7 +51,7 @@ const Signup = () => {
         try {
             if (formData.username.trim() && formData.email.trim() && formData.password.trim()) {
                 dispatch(signInStart());
-                const response = await axios.post("http://192.168.0.113:4000/auth/signup", formData);
+                const response = await axios.post("http://192.168.100.222:4000/auth/signup", formData);
                 if (response.status === 201 || response.status === 200) {
                     Toast.show({
                         type: "success",
